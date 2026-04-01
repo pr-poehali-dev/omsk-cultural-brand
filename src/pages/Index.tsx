@@ -476,6 +476,302 @@ function AnimatedSkyBackground() {
   );
 }
 
+/* ──────────── ГЛАВНЫЙ HERO-БАННЕР ──────────── */
+function MainHeroBanner() {
+  const [count1, setCount1] = useState(0);
+  const [count2, setCount2] = useState(0);
+  const [count3, setCount3] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
+    const animate = (setter: (v: number) => void, target: number, duration: number) => {
+      const start = Date.now();
+      const step = () => {
+        const progress = Math.min((Date.now() - start) / duration, 1);
+        setter(Math.floor(progress * target));
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    animate(setCount1, 300, 2000);
+    animate(setCount2, 11, 1800);
+    animate(setCount3, 3, 1500);
+  }, [visible]);
+
+  return (
+    <section
+      className="relative min-h-screen flex flex-col overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, #040d17 0%, #071a2e 40%, #052010 100%)",
+        fontFamily: "'Montserrat', sans-serif",
+      }}
+    >
+      {/* Декоративный сетчатый фон */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(16,185,129,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(16,185,129,0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      {/* Градиентные световые пятна */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: "600px", height: "600px",
+            top: "-200px", left: "-100px",
+            background: "radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: "500px", height: "500px",
+            bottom: "-150px", right: "-100px",
+            background: "radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: "300px", height: "300px",
+            top: "40%", left: "55%",
+            background: "radial-gradient(circle, rgba(16,185,129,0.07) 0%, transparent 70%)",
+          }}
+        />
+      </div>
+
+      {/* Навигация ГРЕБ-стиль */}
+      <div className="relative z-10 flex items-center justify-between px-8 py-6">
+        <div className="flex items-center gap-3">
+          <div
+            className="flex items-center justify-center w-10 h-10 rounded-xl"
+            style={{ background: "linear-gradient(135deg, #10b981, #059669)" }}
+          >
+            <span className="text-white font-black text-sm">ОПЗ</span>
+          </div>
+          <div>
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "18px", fontWeight: 600, color: "#fff", letterSpacing: "0.02em" }}>
+              Омск под защитой
+            </div>
+            <div style={{ fontSize: "10px", color: "rgba(16,185,129,0.8)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+              Сириус-55 · 2025
+            </div>
+          </div>
+        </div>
+        <a
+          href="#banner"
+          className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300"
+          style={{
+            background: "rgba(16,185,129,0.15)",
+            border: "1px solid rgba(16,185,129,0.4)",
+            color: "#10b981",
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLElement).style.background = "rgba(16,185,129,0.25)";
+            (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLElement).style.background = "rgba(16,185,129,0.15)";
+            (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+          }}
+        >
+          Смотреть проект ↓
+        </a>
+      </div>
+
+      {/* Основной контент */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pb-16 text-center">
+        {/* Бейдж */}
+        <div
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-xs font-semibold tracking-widest uppercase"
+          style={{
+            background: "rgba(16,185,129,0.1)",
+            border: "1px solid rgba(16,185,129,0.3)",
+            color: "#10b981",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.8s ease 0.1s",
+          }}
+        >
+          <span
+            className="w-2 h-2 rounded-full"
+            style={{ background: "#10b981", boxShadow: "0 0 8px #10b981", animation: "pulse 2s infinite" }}
+          />
+          Проект финансовой грамотности · Омск
+        </div>
+
+        {/* Заголовок */}
+        <h1
+          style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "clamp(3.5rem, 10vw, 8rem)",
+            fontWeight: 600,
+            lineHeight: 1.0,
+            letterSpacing: "-0.02em",
+            color: "#ffffff",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(30px)",
+            transition: "all 1s ease 0.3s",
+          }}
+        >
+          <span>Омск —</span>
+          <br />
+          <span
+            style={{
+              background: "linear-gradient(135deg, #10b981 0%, #34d399 40%, #06b6d4 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            Культурная
+          </span>
+          <br />
+          <span style={{ fontStyle: "italic", color: "rgba(255,255,255,0.75)", fontSize: "0.8em" }}>столица России</span>
+        </h1>
+
+        {/* Подзаголовок */}
+        <p
+          className="mt-6 max-w-xl leading-relaxed"
+          style={{
+            fontSize: "clamp(1rem, 2vw, 1.15rem)",
+            color: "rgba(255,255,255,0.55)",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.9s ease 0.5s",
+          }}
+        >
+          Проект по продвижению туристического потенциала Омска. 
+          Здесь начинается Сибирь — здесь живёт история, культура и душа.
+        </p>
+
+        {/* Кнопки */}
+        <div
+          className="flex flex-wrap gap-4 mt-10 justify-center"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.9s ease 0.7s",
+          }}
+        >
+          <a
+            href="#banner"
+            className="px-8 py-4 rounded-full text-base font-bold tracking-wide inline-flex items-center gap-2 transition-all duration-300"
+            style={{
+              background: "linear-gradient(135deg, #10b981, #059669)",
+              color: "#ffffff",
+              boxShadow: "0 8px 32px rgba(16,185,129,0.35)",
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 14px 40px rgba(16,185,129,0.5)";
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(16,185,129,0.35)";
+            }}
+          >
+            Смотреть баннер <span>↓</span>
+          </a>
+          <a
+            href="#map"
+            className="px-8 py-4 rounded-full text-base font-bold tracking-wide inline-flex items-center gap-2 transition-all duration-300"
+            style={{
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              color: "rgba(255,255,255,0.85)",
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.05)";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+            }}
+          >
+            Карта достопримечательностей 🗺️
+          </a>
+        </div>
+
+        {/* Статистика */}
+        <div
+          className="mt-16 grid grid-cols-3 gap-4 w-full max-w-2xl"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.9s ease 0.9s",
+          }}
+        >
+          {[
+            { value: `${count1}+`, label: "лет истории", icon: "🏰" },
+            { value: `${count2 / 10}M`, label: "жителей города", icon: "👥" },
+            { value: `Top-${count3}`, label: "театров Сибири", icon: "🎭" },
+          ].map((stat, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center justify-center py-5 px-4 rounded-2xl"
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                backdropFilter: "blur(16px)",
+              }}
+            >
+              <div className="text-2xl mb-2">{stat.icon}</div>
+              <div
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: "clamp(1.5rem, 4vw, 2.2rem)",
+                  fontWeight: 600,
+                  background: "linear-gradient(135deg, #10b981, #34d399)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  lineHeight: 1,
+                }}
+              >
+                {stat.value}
+              </div>
+              <div
+                className="mt-1 text-center"
+                style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)", letterSpacing: "0.05em" }}
+              >
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Скролл-индикатор */}
+      <div
+        className="relative z-10 flex flex-col items-center gap-2 pb-8"
+        style={{
+          opacity: visible ? 0.5 : 0,
+          transition: "opacity 0.9s ease 1.2s",
+        }}
+      >
+        <div className="w-px h-12" style={{ background: "linear-gradient(to bottom, rgba(16,185,129,0.6), transparent)" }} />
+        <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", letterSpacing: "0.15em", textTransform: "uppercase" }}>
+          Прокрутите вниз
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ──────────── ГЛАВНЫЙ КОМПОНЕНТ ──────────── */
 export default function Index() {
   const [scrolled, setScrolled] = useState(false);
@@ -506,6 +802,7 @@ export default function Index() {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden" style={{ fontFamily: "'Montserrat', sans-serif", background: "#060e1e" }}>
+      <MainHeroBanner />
       <AnimatedSkyBackground />
 
       {/* ══════════════ НАВИГАЦИЯ ══════════════ */}
