@@ -1,781 +1,388 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
-/* ──────────── ДАННЫЕ ──────────── */
-const LANDMARKS = [
+/* ──────────── ДАННЫЕ УСЛУГ ──────────── */
+const SERVICES = [
+  {
+    id: "hockey",
+    icon: "🏒",
+    badge: "Спортивный опыт",
+    title: 'Вечер с «Авангардом»',
+    subtitle: "Погружение в хоккейный мир",
+    desc: 'Даже если вы не фанат хоккея, этот опыт перевернет ваше представление о спорте! Я помогу вам достать билеты на матч ХК "Авангард" (по возможности и сезону), расскажу историю клуба, объясню правила игры и окунусь вместе с вами в оглушительную атмосферу G-Drive Арены. Это настоящий сибирский драйв!',
+    includes: [
+      "Консультация по билетам и наличию мест",
+      "Трансфер до арены (опционально)",
+      "Персональное сопровождение на матче",
+      "Рассказы о традициях омских болельщиков",
+    ],
+    price: "За услугу сопровождения + стоимость билетов",
+    gradient: "from-blue-900/80 to-indigo-900/80",
+    accentColor: "#4F8EF7",
+    payPath: "/pay?service=hockey",
+  },
+  {
+    id: "food",
+    icon: "🍽️",
+    badge: "Гастро-тур",
+    title: "Кулинарный тур «Вкус Сибири»",
+    subtitle: "Гастрономическое приключение",
+    desc: "Откройте для себя Сибирь на вкус! Я покажу вам, где в Омске готовят самые настоящие сибирские пельмени, где попробовать строганину (по сезону), самый вкусный морс из таёжных ягод и где найти настоящий сибирский мед. Мы посетим локальные рынки и проверенные места, которые не найдете в TripAdvisor.",
+    includes: [
+      "Посещение 2–3 аутентичных заведений",
+      "Дегустации блюд сибирской кухни",
+      "Рассказы об истории сибирской гастрономии",
+      "Секретные адреса, которых нет в путеводителях",
+    ],
+    price: "Фиксированная цена + бюджет на дегустации",
+    gradient: "from-amber-900/80 to-orange-900/80",
+    accentColor: "#F59E0B",
+    payPath: "/pay?service=food",
+  },
+  {
+    id: "tour",
+    icon: "🗺️",
+    badge: "Авторская экскурсия",
+    title: "Омск глазами инсайдера",
+    subtitle: "Авторская экскурсия",
+    desc: "Забудьте о скучных путеводителях! Я проведу вас по Омску, показав те уголки и истории, о которых знают только местные. От тайных дворов Любинского проспекта до лучших мест для селфи с закатом на Иртыше. Это не просто экскурсия, это погружение в настоящую омичскую жизнь с её шутками, легендами и любимыми местами.",
+    includes: [
+      "3–4 часа пешеходной экскурсии",
+      "Нетуристические, но колоритные места",
+      "Местные легенды, шутки и традиции",
+      "Омские пельмени и сибирский чай (опционально)",
+    ],
+    price: "Фиксированная за группу до 5–7 человек",
+    gradient: "from-emerald-900/80 to-teal-900/80",
+    accentColor: "#10B981",
+    payPath: "/pay?service=tour",
+  },
+];
+
+/* ──────────── ДОСТОПРИМЕЧАТЕЛЬНОСТИ ──────────── */
+const ATTRACTIONS = [
   {
     id: 1,
     name: "Омская крепость",
-    desc: "Историческая крепость XVIII века — место основания Омска. Восстановленные бастионы, Тобольские ворота и уникальные музейные экспозиции перенесут вас в эпоху освоения Сибири.",
-    x: 50.5, y: 55,
-    category: "История",
+    desc: "Историческая крепость XVIII века — место основания Омска. Восстановленные бастионы и Тобольские ворота перенесут вас в эпоху освоения Сибири.",
     emoji: "🏰",
-    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.366500,54.990800&z=17&text=Омская+крепость",
-    google: "https://maps.google.com/?q=Омская+крепость,+Омск",
+    img: "https://images.unsplash.com/photo-1563885572793-a5b8e9b3a9e4?w=600&q=80",
+    category: "История",
   },
   {
     id: 2,
-    name: "Литературный музей им. Достоевского",
-    desc: "Ф. М. Достоевский провёл в Омске 4 года на каторге. Музей хранит уникальные артефакты и документы, связанные с пребыванием великого писателя в Омском остроге.",
-    x: 52, y: 50,
-    category: "Культура",
-    emoji: "📚",
-    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.371000,54.993000&z=17&text=Музей+Достоевского+Омск",
-    google: "https://maps.google.com/?q=Литературный+музей+Достоевского+Омск",
+    name: "Набережная Иртыша",
+    desc: "Живописная набережная великой реки — любимое место отдыха омичей. Закаты здесь превращаются в настоящие картины импрессионистов.",
+    emoji: "🌊",
+    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
+    category: "Природа",
   },
   {
     id: 3,
-    name: "Омский государственный театр драмы",
-    desc: "Один из старейших театров Сибири (1874 г.). Великолепное историческое здание в стиле классицизма и богатый репертуар — от классики до авангарда.",
-    x: 48, y: 44,
-    category: "Искусство",
+    name: "Театр драмы",
+    desc: "Один из старейших театров Сибири (1874 г.). Величественное здание в стиле классицизма и богатый репертуар — от классики до авангарда.",
     emoji: "🎭",
-    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.369000,54.998000&z=17&text=Омский+театр+драмы",
-    google: "https://maps.google.com/?q=Омский+государственный+театр+драмы",
+    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",
+    category: "Культура",
   },
   {
     id: 4,
-    name: "Омский областной музей изобразительных искусств им. Врубеля",
-    desc: "Крупнейший художественный музей Сибири с коллекцией более 30 000 экспонатов: от древнерусской иконописи до современного искусства. Гордость — работы Врубеля.",
-    x: 46, y: 49,
-    category: "Искусство",
+    name: "Музей им. Врубеля",
+    desc: "Крупнейший художественный музей Сибири с коллекцией более 30 000 экспонатов. Гордость — оригинальные работы Михаила Врубеля.",
     emoji: "🎨",
-    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.367000,54.995000&z=17&text=Музей+Врубеля+Омск",
-    google: "https://maps.google.com/?q=Омский+музей+изобразительных+искусств+им+Врубеля",
+    img: "https://images.unsplash.com/photo-1544413660-299165566b1d?w=600&q=80",
+    category: "Искусство",
   },
   {
     id: 5,
     name: "Серафимо-Алексеевская часовня",
-    desc: "Изящная часовня начала XX века, восстановленная в 1990-х. Жемчужина Омска с уникальной архитектурой — символ возрождения духовной жизни города.",
-    x: 54, y: 43,
-    category: "Архитектура",
+    desc: "Жемчужина Омска — изящная часовня начала XX века. Восстановленная в 1990-х, она стала символом возрождения духовной жизни города.",
     emoji: "⛪",
-    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.369500,55.001000&z=17&text=Серафимо-Алексеевская+часовня+Омск",
-    google: "https://maps.google.com/?q=Серафимо-Алексеевская+часовня+Омск",
+    img: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&q=80",
+    category: "Архитектура",
   },
   {
     id: 6,
-    name: "Набережная Иртыша",
-    desc: "Живописная набережная вдоль Иртыша — любимое место отдыха омичей и туристов. Прогулки, кафе, смотровые площадки с захватывающим видом на реку.",
-    x: 42, y: 58,
-    category: "Природа",
-    emoji: "🌊",
-    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.362000,54.985000&z=16&text=Набережная+Иртыша+Омск",
-    google: "https://maps.google.com/?q=Набережная+Иртыша+Омск",
+    name: "Успенский собор",
+    desc: "Величественный Успенский кафедральный собор на Соборной площади — духовный центр Омска и один из красивейших храмов Сибири.",
+    emoji: "🕍",
+    img: "https://images.unsplash.com/photo-1543158181-e6f9f6712055?w=600&q=80",
+    category: "Архитектура",
   },
   {
     id: 7,
-    name: "Соборная площадь",
-    desc: "Главная площадь Омска с восстановленным Успенским кафедральным собором. Сердце городской жизни, место городских праздников и торжеств.",
-    x: 56, y: 37,
-    category: "Архитектура",
-    emoji: "🕍",
-    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.370000,55.006000&z=17&text=Соборная+площадь+Омск",
-    google: "https://maps.google.com/?q=Соборная+площадь+Омск",
+    name: "Музей Достоевского",
+    desc: "Ф. М. Достоевский провёл в Омске 4 года на каторге. Музей хранит уникальные артефакты и документы об этом периоде жизни великого писателя.",
+    emoji: "📚",
+    img: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80",
+    category: "Культура",
   },
   {
     id: 8,
     name: "G-Drive Арена",
-    desc: "Современный спортивно-развлекательный комплекс — домашняя арена ХК «Авангард». Хоккейные матчи, концерты и крупные мероприятия.",
-    x: 63, y: 30,
-    category: "Спорт",
+    desc: "Современная домашняя арена легендарного ХК «Авангард». Хоккейные матчи здесь — это настоящий праздник и оглушительная атмосфера.",
     emoji: "🏒",
-    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.381000,55.014000&z=16&text=G-Drive+Арена+Омск",
-    google: "https://maps.google.com/?q=G-Drive+Арена+Омск",
+    img: "https://images.unsplash.com/photo-1515703407324-5f753afd8be8?w=600&q=80",
+    category: "Спорт",
   },
   {
     id: 9,
-    name: "Омский государственный цирк",
-    desc: "Один из лучших цирков Сибири с захватывающими программами для всей семьи. Уникальное здание с великолепной куполообразной архитектурой.",
-    x: 38, y: 38,
-    category: "Развлечения",
-    emoji: "🎪",
-    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.355000,55.003000&z=17&text=Омский+цирк",
-    google: "https://maps.google.com/?q=Омский+государственный+цирк",
-  },
-  {
-    id: 10,
-    name: "Сибирский культурный центр",
-    desc: "Туристический информационный центр Омска. Здесь можно получить карты, буклеты, записаться на экскурсии и узнать всё о культурной жизни города.",
-    x: 58, y: 62,
-    category: "Туризм",
-    emoji: "ℹ️",
-    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.374000,54.978000&z=17&text=Туристический+центр+Омск",
-    google: "https://maps.google.com/?q=Туристический+информационный+центр+Омск",
+    name: "Любинский проспект",
+    desc: "Главный бульвар Омска с историческими зданиями XIX–XX веков. Прогулка по нему — это путешествие сквозь эпохи и архитектурные стили.",
+    emoji: "🌆",
+    img: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80",
+    category: "Архитектура",
   },
 ];
 
-const CATEGORY_COLORS: Record<string, string> = {
-  "История":       "#FFD700",
-  "Культура":      "#E879F9",
-  "Искусство":     "#22D3EE",
-  "Архитектура":   "#F97316",
-  "Природа":       "#4ADE80",
-  "Спорт":         "#F43F5E",
-  "Развлечения":   "#A78BFA",
-  "Туризм":        "#38BDF8",
-};
-
-const STRATEGIES = [
-  {
-    icon: "🎯",
-    title: "Единый бренд «Культурная столица»",
-    text: "Создание узнаваемой визуальной идентичности города на основе образов Достоевского, Иртыша и сибирской архитектуры. Единый стиль во всех коммуникациях — от указателей до соцсетей.",
-  },
-  {
-    icon: "📱",
-    title: "Цифровое продвижение",
-    text: "Активное ведение социальных сетей, таргетированная реклама на туристические аудитории, коллаборации с тревел-блогерами и создание вирусного контента об Омске.",
-  },
-  {
-    icon: "🎨",
-    title: "Культурные события",
-    text: "Организация федеральных фестивалей, форумов и выставок, которые привлекают туристов из других регионов. Событийный туризм — мощный инструмент повышения потока.",
-  },
-  {
-    icon: "🗺️",
-    title: "Туристические маршруты",
-    text: "Разработка тематических маршрутов: «По следам Достоевского», «Архитектурный Омск», «Иртышская набережная». Включение в федеральные туристические программы.",
-  },
-  {
-    icon: "🤝",
-    title: "Партнёрства и PR",
-    text: "Сотрудничество с федеральными СМИ, туроператорами и крупными компаниями для размещения рекламы Омска в федеральном и международном медиапространстве.",
-  },
-  {
-    icon: "📊",
-    title: "Аналитика и мониторинг",
-    text: "Отслеживание туристического потока, анализ эффективности кампаний и регулярная актуализация стратегии на основе данных. Чёткие KPI и целевые показатели роста.",
-  },
+/* ──────────── ДАННЫЕ ДЛЯ СКРЕТЧ-КАРТЫ ──────────── */
+const SCRATCH_PRIZES = [
+  { emoji: "🎁", text: "Скидка 15% на тур «Омск глазами инсайдера»!" },
+  { emoji: "☕", text: "Бесплатный сибирский чай в кафе партнёра!" },
+  { emoji: "🏒", text: "Приоритет при записи на хоккейный вечер!" },
+  { emoji: "📸", text: "Бесплатная фотосессия во время экскурсии!" },
+  { emoji: "🍽️", text: "Скидка 10% на кулинарный тур «Вкус Сибири»!" },
+  { emoji: "🌟", text: "VIP-место на следующей экскурсии!" },
 ];
 
-const FACTS = [
-  { value: "300+", label: "лет истории" },
-  { value: "1.1M", label: "жителей" },
-  { value: "Top-3", label: "театров Сибири" },
-  { value: "4 года", label: "Достоевский в Омске" },
-];
+/* ──────────── ХУКИ ──────────── */
+function useScrollReveal() {
+  const refs = useRef<(HTMLElement | null)[]>([]);
+  const [visible, setVisible] = useState<boolean[]>([]);
 
-/* ──────────── КОМПОНЕНТ КАРТЫ ──────────── */
-function OmskMap() {
-  const [activePinId, setActivePinId] = useState<number | null>(null);
-  const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
-  const mapRef = useRef<HTMLDivElement>(null);
-  const activePin = LANDMARKS.find((l) => l.id === activePinId);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const idx = refs.current.indexOf(entry.target as HTMLElement);
+          if (idx !== -1 && entry.isIntersecting) {
+            setVisible((prev) => {
+              const next = [...prev];
+              next[idx] = true;
+              return next;
+            });
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    refs.current.forEach((el) => el && obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
 
-  const handlePinClick = (e: React.MouseEvent, id: number) => {
-    e.stopPropagation();
-    if (activePinId === id) {
-      setActivePinId(null);
-      setTooltipPos(null);
-      return;
+  const register = (idx: number) => (el: HTMLElement | null) => {
+    refs.current[idx] = el;
+    if (el && !visible[idx]) {
+      // initial check
     }
-    const rect = mapRef.current?.getBoundingClientRect();
-    if (rect) {
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      setTooltipPos({ x, y });
+  };
+  return { visible, register };
+}
+
+/* ──────────── КОМПОНЕНТ СКРЕТЧ-КАРТЫ ──────────── */
+function ScratchCard() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [revealed, setRevealed] = useState(false);
+  const [scratching, setScratching] = useState(false);
+  const [prize] = useState(() => SCRATCH_PRIZES[Math.floor(Math.random() * SCRATCH_PRIZES.length)]);
+  const [scratchPercent, setScratchPercent] = useState(0);
+  const isDrawing = useRef(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    // Фон скретч-слоя
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    grad.addColorStop(0, "#1a2a5e");
+    grad.addColorStop(0.5, "#0f1a3e");
+    grad.addColorStop(1, "#2a1a5e");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Узор
+    ctx.fillStyle = "rgba(255,215,0,0.15)";
+    for (let i = 0; i < 30; i++) {
+      ctx.beginPath();
+      ctx.arc(
+        Math.random() * canvas.width,
+        Math.random() * canvas.height,
+        Math.random() * 3 + 1,
+        0,
+        Math.PI * 2
+      );
+      ctx.fill();
     }
-    setActivePinId(id);
+
+    // Текст-подсказка
+    ctx.fillStyle = "rgba(255,215,0,0.9)";
+    ctx.font = "bold 16px Montserrat, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("✨ Потри, чтобы узнать приз!", canvas.width / 2, canvas.height / 2 - 10);
+    ctx.font = "14px Montserrat, sans-serif";
+    ctx.fillStyle = "rgba(255,255,255,0.6)";
+    ctx.fillText("🎰 Твой персональный подарок ждёт", canvas.width / 2, canvas.height / 2 + 20);
+  }, []);
+
+  const getPos = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement) => {
+    const rect = canvas.getBoundingClientRect();
+    if ("touches" in e) {
+      return {
+        x: e.touches[0].clientX - rect.left,
+        y: e.touches[0].clientY - rect.top,
+      };
+    }
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  };
+
+  const scratch = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDrawing.current) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const pos = getPos(e, canvas);
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, 28, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Подсчёт процента
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    let cleared = 0;
+    for (let i = 3; i < imageData.data.length; i += 4) {
+      if (imageData.data[i] < 128) cleared++;
+    }
+    const percent = (cleared / (canvas.width * canvas.height)) * 100;
+    setScratchPercent(Math.round(percent));
+    if (percent > 60 && !revealed) {
+      setRevealed(true);
+    }
   };
 
   return (
-    <div className="relative w-full" ref={mapRef} onClick={() => { setActivePinId(null); setTooltipPos(null); }}>
-      {/* Карта через OpenStreetMap iframe */}
-      <div className="relative w-full rounded-2xl overflow-hidden" style={{ height: "560px", boxShadow: "0 0 60px rgba(255,215,0,0.15), 0 20px 60px rgba(0,0,0,0.5)" }}>
-        <iframe
-          title="Карта Омска"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=73.28%2C54.95%2C73.45%2C55.05&layer=mapnik&marker=54.9924%2C73.3686"
-          style={{ width: "100%", height: "100%", border: "none", borderRadius: "16px", filter: "hue-rotate(200deg) saturate(0.7) brightness(0.8)" }}
-          loading="lazy"
-        />
-        {/* Оверлей с цветом */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(135deg, rgba(0,15,40,0.25) 0%, transparent 50%, rgba(0,15,40,0.25) 100%)", borderRadius: "16px" }} />
-        {/* Пины поверх карты */}
-        {LANDMARKS.map((lm) => (
-          <button
-            key={lm.id}
-            className="absolute map-pin group"
-            style={{ left: `${lm.x}%`, top: `${lm.y}%`, transform: "translate(-50%, -50%)", zIndex: 10 }}
-            onClick={(e) => handlePinClick(e, lm.id)}
-            title={lm.name}
-          >
-            <div className="relative flex items-center justify-center">
-              {/* Кольцо-пульсация */}
-              {activePinId === lm.id && (
-                <span className="absolute w-10 h-10 rounded-full animate-ripple" style={{ background: CATEGORY_COLORS[lm.category] + "33" }} />
-              )}
-              {/* Основной пин */}
-              <div
-                className="w-9 h-9 rounded-full flex items-center justify-center text-base font-bold shadow-lg transition-all duration-200 group-hover:scale-125"
-                style={{
-                  background: activePinId === lm.id
-                    ? `linear-gradient(135deg, ${CATEGORY_COLORS[lm.category]}, ${CATEGORY_COLORS[lm.category]}cc)`
-                    : "rgba(0,15,40,0.85)",
-                  border: `2.5px solid ${CATEGORY_COLORS[lm.category]}`,
-                  boxShadow: `0 0 15px ${CATEGORY_COLORS[lm.category]}66`,
-                  backdropFilter: "blur(8px)",
-                }}
-              >
-                {lm.emoji}
-              </div>
-            </div>
-          </button>
-        ))}
-        {/* Тултип */}
-        {activePin && tooltipPos && (
-          <div
-            className="map-tooltip pointer-events-auto"
-            style={{
-              left: tooltipPos.x > (mapRef.current?.offsetWidth || 600) / 2 ? tooltipPos.x - 260 : tooltipPos.x + 20,
-              top: Math.min(tooltipPos.y - 20, (mapRef.current?.offsetHeight || 500) - 220),
-              pointerEvents: "auto",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-2xl">{activePin.emoji}</span>
-              <div>
-                <span
-                  className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                  style={{ background: CATEGORY_COLORS[activePin.category] + "33", color: CATEGORY_COLORS[activePin.category] }}
-                >
-                  {activePin.category}
-                </span>
-              </div>
-            </div>
-            <h4 className="text-white font-bold text-sm mb-2 leading-tight">{activePin.name}</h4>
-            <p className="text-white/70 text-xs leading-relaxed mb-3">{activePin.desc}</p>
-            <div className="flex gap-2">
-              <a
-                href={activePin.yandex}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 text-center py-1.5 px-2 rounded-lg text-xs font-semibold transition-all hover:scale-105"
-                style={{ background: "linear-gradient(135deg, #FC3F1D, #FF6534)", color: "#fff" }}
-              >
-                🗺 Яндекс
-              </a>
-              <a
-                href={activePin.google}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 text-center py-1.5 px-2 rounded-lg text-xs font-semibold transition-all hover:scale-105"
-                style={{ background: "linear-gradient(135deg, #4285F4, #34A853)", color: "#fff" }}
-              >
-                🌐 Google
-              </a>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Легенда */}
-      <div className="mt-5 flex flex-wrap gap-2 justify-center">
-        {Object.entries(CATEGORY_COLORS).map(([cat, color]) => (
-          <span key={cat} className="flex items-center gap-1.5 text-xs text-white/70 px-3 py-1 rounded-full" style={{ background: color + "22", border: `1px solid ${color}55` }}>
-            <span className="w-2 h-2 rounded-full" style={{ background: color }} />
-            {cat}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ──────────── КОМПОНЕНТ АНИМИРОВАННОГО НЕБА ──────────── */
-function AnimatedSkyBackground() {
-  return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-      {/* Основной градиент — вечерний Омск */}
-      <div className="absolute inset-0" style={{
-        background: "linear-gradient(180deg, #0a0520 0%, #1a0a3e 20%, #2d1b5e 35%, #4a2878 45%, #7a3e8c 55%, #b5607a 65%, #e88860 75%, #f4a96e 80%, #1a2a4a 85%, #0d1a35 100%)"
-      }} />
-
-      {/* Звёзды */}
-      {Array.from({ length: 60 }).map((_, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full star"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 55}%`,
-            width: `${Math.random() * 2.5 + 1}px`,
-            height: `${Math.random() * 2.5 + 1}px`,
-            background: "#fff",
-            opacity: 0.4 + Math.random() * 0.6,
-            animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${2 + Math.random() * 4}s`,
-          }}
-        />
-      ))}
-
-      {/* Полярное сияние */}
-      <div className="absolute animate-aurora" style={{
-        top: "5%", left: "10%", right: "10%", height: "30%",
-        background: "radial-gradient(ellipse, rgba(80,200,150,0.15) 0%, rgba(100,80,200,0.1) 50%, transparent 80%)",
-        filter: "blur(30px)",
-      }} />
-
-      {/* Облака */}
-      <div className="cloud-1 absolute" style={{ top: "18%", opacity: 0.12 }}>
-        <svg width="300" height="80" viewBox="0 0 300 80">
-          <ellipse cx="150" cy="50" rx="140" ry="30" fill="white" />
-          <ellipse cx="100" cy="40" rx="70" ry="25" fill="white" />
-          <ellipse cx="200" cy="38" rx="80" ry="28" fill="white" />
-        </svg>
-      </div>
-      <div className="cloud-2 absolute" style={{ top: "28%", opacity: 0.08 }}>
-        <svg width="400" height="100" viewBox="0 0 400 100">
-          <ellipse cx="200" cy="65" rx="190" ry="35" fill="white" />
-          <ellipse cx="130" cy="50" rx="100" ry="35" fill="white" />
-          <ellipse cx="280" cy="45" rx="110" ry="38" fill="white" />
-        </svg>
-      </div>
-      <div className="cloud-3 absolute" style={{ top: "12%", opacity: 0.09 }}>
-        <svg width="250" height="70" viewBox="0 0 250 70">
-          <ellipse cx="125" cy="45" rx="115" ry="24" fill="white" />
-          <ellipse cx="80" cy="35" rx="60" ry="22" fill="white" />
-          <ellipse cx="170" cy="32" rx="70" ry="24" fill="white" />
-        </svg>
-      </div>
-
-      {/* Силуэт города Омска */}
-      <div className="absolute bottom-0 left-0 right-0 animate-float-city" style={{ height: "42%", zIndex: 1 }}>
-        <svg viewBox="0 0 1440 350" preserveAspectRatio="xMidYMax slice" className="w-full h-full">
-          {/* Дальний план — тёмно-синий */}
-          <g fill="#0d1a35" opacity="0.9">
-            {/* Жилые дома вдали */}
-            <rect x="0" y="200" width="60" height="150" />
-            <rect x="10" y="175" width="40" height="25" />
-            <rect x="15" y="160" width="30" height="15" />
-            <rect x="70" y="185" width="80" height="165" />
-            <rect x="80" y="165" width="60" height="20" />
-            <rect x="160" y="195" width="50" height="155" />
-            <rect x="170" y="170" width="30" height="25" />
-            <rect x="220" y="180" width="70" height="170" />
-            <rect x="230" y="155" width="50" height="25" />
-            <rect x="300" y="190" width="55" height="160" />
-            <rect x="365" y="185" width="65" height="165" />
-            <rect x="375" y="160" width="45" height="25" />
-            <rect x="440" y="195" width="45" height="155" />
-            <rect x="495" y="175" width="75" height="175" />
-            <rect x="500" y="150" width="65" height="25" />
-            <rect x="580" y="190" width="55" height="160" />
-            <rect x="645" y="185" width="70" height="165" />
-            <rect x="650" y="155" width="60" height="30" />
-            <rect x="725" y="195" width="50" height="155" />
-            <rect x="785" y="180" width="65" height="170" />
-            <rect x="790" y="155" width="55" height="25" />
-            <rect x="860" y="190" width="60" height="160" />
-            <rect x="930" y="185" width="75" height="165" />
-            <rect x="935" y="155" width="65" height="30" />
-            <rect x="1015" y="195" width="50" height="155" />
-            <rect x="1075" y="175" width="70" height="175" />
-            <rect x="1080" y="150" width="60" height="25" />
-            <rect x="1155" y="190" width="55" height="160" />
-            <rect x="1220" y="180" width="70" height="170" />
-            <rect x="1225" y="155" width="60" height="25" />
-            <rect x="1300" y="195" width="50" height="155" />
-            <rect x="1360" y="185" width="80" height="165" />
-          </g>
-
-          {/* Средний план — тёмно-синий, насыщеннее */}
-          <g fill="#0a1428" opacity="0.95">
-            {/* Театр драмы — колонны */}
-            <rect x="380" y="130" width="160" height="220" />
-            <rect x="390" y="110" width="140" height="20" />
-            <rect x="395" y="90" width="130" height="20" />
-            <rect x="410" y="75" width="100" height="15" />
-            {/* Колонны */}
-            {[400, 420, 440, 460, 480, 500, 520].map((x, i) => (
-              <rect key={i} x={x} y="130" width="10" height="80" fill="#0d2040" />
-            ))}
-
-            {/* Башни и высотки */}
-            <rect x="220" y="100" width="55" height="250" />
-            <rect x="235" y="80" width="25" height="20" />
-            <rect x="244" y="62" width="7" height="18" />
-
-            {/* Купол/церковь */}
-            <path d="M 700 350 L 700 160 Q 720 120 740 160 L 740 350 Z" />
-            <path d="M 715 160 Q 720 100 725 90 Q 730 100 735 160 Z" />
-            <line x1="722" y1="90" x2="722" y2="55" stroke="#0a1428" strokeWidth="3" />
-            <rect x="718" y="60" width="8" height="30" />
-
-            {/* G-Drive Арена — куполообразная */}
-            <path d="M 1050 350 L 1050 200 Q 1130 130 1210 200 L 1210 350 Z" />
-            <ellipse cx="1130" cy="200" rx="80" ry="40" />
-
-            {/* Омский острог */}
-            <rect x="600" y="155" width="90" height="195" />
-            <polygon points="600,155 630,120 660,155" />
-            <polygon points="640,155 670,120 700,155" />
-            <rect x="605" y="210" width="20" height="35" />
-
-            {/* Жилые высотки */}
-            <rect x="50" y="140" width="50" height="210" />
-            <rect x="60" y="120" width="30" height="20" />
-            <rect x="850" y="150" width="45" height="200" />
-            <rect x="858" y="130" width="30" height="20" />
-            <rect x="1300" y="145" width="55" height="205" />
-            <rect x="1310" y="125" width="35" height="20" />
-
-            {/* Огни в окнах */}
-          </g>
-
-          {/* Передний план — самый тёмный */}
-          <g fill="#060e1e">
-            {/* Набережная */}
-            <rect x="0" y="310" width="1440" height="40" />
-            {/* Деревья вдоль набережной */}
-            {Array.from({ length: 20 }).map((_, i) => (
-              <g key={i}>
-                <rect x={30 + i * 72} y="270" width="6" height="40" />
-                <ellipse cx={33 + i * 72} cy="265" rx="18" ry="22" />
-              </g>
-            ))}
-          </g>
-
-          {/* Отражение в воде */}
-          <g fill="none" opacity="0.25">
-            <rect x="0" y="320" width="1440" height="30" fill="url(#waterGrad)" />
-          </g>
-          <defs>
-            <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#1a3a6e" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#060e1e" stopOpacity="0.1" />
-            </linearGradient>
-          </defs>
-
-          {/* Огни в окнах — точки */}
-          <g opacity="0.7">
-            {[
-              [85, 200], [90, 215], [95, 230], [100, 200], [105, 220],
-              [240, 170], [245, 185], [250, 200], [230, 190],
-              [400, 175], [420, 180], [440, 175], [460, 185],
-              [620, 200], [635, 215], [640, 225],
-              [870, 195], [880, 210], [885, 225],
-              [1060, 230], [1080, 240], [1100, 235], [1120, 250],
-              [1315, 195], [1325, 210], [1320, 225],
-              [55, 180], [65, 195], [75, 210], [60, 220],
-            ].map(([x, y], i) => (
-              <circle key={i} cx={x} cy={y} r="2" fill="#FFF4B0" opacity={0.6 + (i % 3) * 0.1} />
-            ))}
-          </g>
-        </svg>
-      </div>
-
-      {/* Отражение в реке */}
-      <div className="absolute bottom-0 left-0 right-0 animate-float-slow" style={{ height: "18%", zIndex: 0 }}>
-        <div style={{
-          width: "100%", height: "100%",
-          background: "linear-gradient(180deg, rgba(10,25,60,0.8) 0%, rgba(5,15,35,0.95) 100%)",
-        }} />
-      </div>
-    </div>
-  );
-}
-
-/* ──────────── ГЛАВНЫЙ HERO-БАННЕР ──────────── */
-function MainHeroBanner() {
-  const [count1, setCount1] = useState(0);
-  const [count2, setCount2] = useState(0);
-  const [count3, setCount3] = useState(0);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!visible) return;
-    const animate = (setter: (v: number) => void, target: number, duration: number) => {
-      const start = Date.now();
-      const step = () => {
-        const progress = Math.min((Date.now() - start) / duration, 1);
-        setter(Math.floor(progress * target));
-        if (progress < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    };
-    animate(setCount1, 300, 2000);
-    animate(setCount2, 11, 1800);
-    animate(setCount3, 3, 1500);
-  }, [visible]);
-
-  return (
-    <section
-      className="relative min-h-screen flex flex-col overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, #040d17 0%, #071a2e 40%, #052010 100%)",
-        fontFamily: "'Montserrat', sans-serif",
-      }}
-    >
-      {/* Декоративный сетчатый фон */}
+    <div className="flex flex-col items-center gap-4">
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="relative rounded-2xl overflow-hidden cursor-pointer select-none"
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(16,185,129,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(16,185,129,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      {/* Градиентные световые пятна */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div
-          className="absolute rounded-full"
-          style={{
-            width: "600px", height: "600px",
-            top: "-200px", left: "-100px",
-            background: "radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%)",
-          }}
-        />
-        <div
-          className="absolute rounded-full"
-          style={{
-            width: "500px", height: "500px",
-            bottom: "-150px", right: "-100px",
-            background: "radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 70%)",
-          }}
-        />
-        <div
-          className="absolute rounded-full"
-          style={{
-            width: "300px", height: "300px",
-            top: "40%", left: "55%",
-            background: "radial-gradient(circle, rgba(16,185,129,0.07) 0%, transparent 70%)",
-          }}
-        />
-      </div>
-
-      {/* Навигация ГРЕБ-стиль */}
-      <div className="relative z-10 flex items-center justify-between px-8 py-6">
-        <div className="flex items-center gap-3">
-          <div
-            className="flex items-center justify-center w-10 h-10 rounded-xl"
-            style={{ background: "linear-gradient(135deg, #10b981, #059669)" }}
-          >
-            <span className="text-white font-black text-sm">ОПЗ</span>
-          </div>
-          <div>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "18px", fontWeight: 600, color: "#fff", letterSpacing: "0.02em" }}>
-              Омск под защитой
-            </div>
-            <div style={{ fontSize: "10px", color: "rgba(16,185,129,0.8)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-              Сириус-55 · 2025
-            </div>
-          </div>
-        </div>
-        <a
-          href="#banner"
-          className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300"
-          style={{
-            background: "rgba(16,185,129,0.15)",
-            border: "1px solid rgba(16,185,129,0.4)",
-            color: "#10b981",
-          }}
-          onMouseEnter={e => {
-            (e.currentTarget as HTMLElement).style.background = "rgba(16,185,129,0.25)";
-            (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
-          }}
-          onMouseLeave={e => {
-            (e.currentTarget as HTMLElement).style.background = "rgba(16,185,129,0.15)";
-            (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-          }}
-        >
-          Смотреть проект ↓
-        </a>
-      </div>
-
-      {/* Основной контент */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pb-16 text-center">
-        {/* Бейдж */}
-        <div
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-xs font-semibold tracking-widest uppercase"
-          style={{
-            background: "rgba(16,185,129,0.1)",
-            border: "1px solid rgba(16,185,129,0.3)",
-            color: "#10b981",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.8s ease 0.1s",
-          }}
-        >
-          <span
-            className="w-2 h-2 rounded-full"
-            style={{ background: "#10b981", boxShadow: "0 0 8px #10b981", animation: "pulse 2s infinite" }}
-          />
-          Проект финансовой грамотности · Омск
-        </div>
-
-        {/* Заголовок */}
-        <h1
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "clamp(3.5rem, 10vw, 8rem)",
-            fontWeight: 600,
-            lineHeight: 1.0,
-            letterSpacing: "-0.02em",
-            color: "#ffffff",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(30px)",
-            transition: "all 1s ease 0.3s",
-          }}
-        >
-          <span>Омск —</span>
-          <br />
-          <span
-            style={{
-              background: "linear-gradient(135deg, #10b981 0%, #34d399 40%, #06b6d4 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            Культурная
-          </span>
-          <br />
-          <span style={{ fontStyle: "italic", color: "rgba(255,255,255,0.75)", fontSize: "0.8em" }}>столица России</span>
-        </h1>
-
-        {/* Подзаголовок */}
-        <p
-          className="mt-6 max-w-xl leading-relaxed"
-          style={{
-            fontSize: "clamp(1rem, 2vw, 1.15rem)",
-            color: "rgba(255,255,255,0.55)",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.9s ease 0.5s",
-          }}
-        >
-          Проект по продвижению туристического потенциала Омска. 
-          Здесь начинается Сибирь — здесь живёт история, культура и душа.
-        </p>
-
-        {/* Кнопки */}
-        <div
-          className="flex flex-wrap gap-4 mt-10 justify-center"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.9s ease 0.7s",
-          }}
-        >
-          <a
-            href="#banner"
-            className="px-8 py-4 rounded-full text-base font-bold tracking-wide inline-flex items-center gap-2 transition-all duration-300"
-            style={{
-              background: "linear-gradient(135deg, #10b981, #059669)",
-              color: "#ffffff",
-              boxShadow: "0 8px 32px rgba(16,185,129,0.35)",
-            }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 14px 40px rgba(16,185,129,0.5)";
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(16,185,129,0.35)";
-            }}
-          >
-            Смотреть баннер <span>↓</span>
-          </a>
-          <a
-            href="#map"
-            className="px-8 py-4 rounded-full text-base font-bold tracking-wide inline-flex items-center gap-2 transition-all duration-300"
-            style={{
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.2)",
-              color: "rgba(255,255,255,0.85)",
-            }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)";
-              (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.05)";
-              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-            }}
-          >
-            Карта достопримечательностей 🗺️
-          </a>
-        </div>
-
-        {/* Статистика */}
-        <div
-          className="mt-16 grid grid-cols-3 gap-4 w-full max-w-2xl"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.9s ease 0.9s",
-          }}
-        >
-          {[
-            { value: `${count1}+`, label: "лет истории", icon: "🏰" },
-            { value: `${count2 / 10}M`, label: "жителей города", icon: "👥" },
-            { value: `Top-${count3}`, label: "театров Сибири", icon: "🎭" },
-          ].map((stat, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center justify-center py-5 px-4 rounded-2xl"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                backdropFilter: "blur(16px)",
-              }}
-            >
-              <div className="text-2xl mb-2">{stat.icon}</div>
-              <div
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: "clamp(1.5rem, 4vw, 2.2rem)",
-                  fontWeight: 600,
-                  background: "linear-gradient(135deg, #10b981, #34d399)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  lineHeight: 1,
-                }}
-              >
-                {stat.value}
-              </div>
-              <div
-                className="mt-1 text-center"
-                style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)", letterSpacing: "0.05em" }}
-              >
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Скролл-индикатор */}
-      <div
-        className="relative z-10 flex flex-col items-center gap-2 pb-8"
-        style={{
-          opacity: visible ? 0.5 : 0,
-          transition: "opacity 0.9s ease 1.2s",
+          width: "100%",
+          maxWidth: 420,
+          height: 180,
+          boxShadow: "0 0 40px rgba(255,215,0,0.2), 0 8px 32px rgba(0,0,0,0.5)",
+          border: "2px solid rgba(255,215,0,0.3)",
         }}
       >
-        <div className="w-px h-12" style={{ background: "linear-gradient(to bottom, rgba(16,185,129,0.6), transparent)" }} />
-        <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", letterSpacing: "0.15em", textTransform: "uppercase" }}>
-          Прокрутите вниз
+        {/* Приз под слоем */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center gap-3"
+          style={{ background: "linear-gradient(135deg, #0a1628, #1a2a5e)" }}
+        >
+          <div style={{ fontSize: 48 }}>{prize.emoji}</div>
+          <div
+            className="text-center px-4"
+            style={{
+              color: "#FFD700",
+              fontFamily: "Cormorant Garamond, serif",
+              fontSize: 18,
+              fontWeight: 700,
+              lineHeight: 1.4,
+            }}
+          >
+            {prize.text}
+          </div>
         </div>
+        {/* Скретч-слой */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full touch-none"
+          style={{ opacity: revealed ? 0 : 1, transition: "opacity 0.8s ease" }}
+          onMouseDown={() => { isDrawing.current = true; setScratching(true); }}
+          onMouseUp={() => { isDrawing.current = false; }}
+          onMouseLeave={() => { isDrawing.current = false; }}
+          onMouseMove={scratch}
+          onTouchStart={() => { isDrawing.current = true; setScratching(true); }}
+          onTouchEnd={() => { isDrawing.current = false; }}
+          onTouchMove={scratch}
+        />
       </div>
-    </section>
+      {!revealed && (
+        <div className="text-center" style={{ color: "rgba(255,255,255,0.5)", fontSize: 13 }}>
+          {scratching ? `Стёрто ${scratchPercent}% — продолжай!` : "Нажми и потри пальцем или мышью"}
+        </div>
+      )}
+      {revealed && (
+        <div
+          className="text-center animate-fade-up px-4"
+          style={{ color: "#FFD700", fontWeight: 700, fontSize: 15 }}
+        >
+          🎉 Поздравляем! Покажи этот экран при записи и получи свой бонус!
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ──────────── НАВИГАЦИЯ ──────────── */
+const NAV_ITEMS = [
+  { label: "Главная", href: "#hero" },
+  { label: "Услуги", href: "#services" },
+  { label: "Омск", href: "#omsk" },
+  { label: "Интерактив", href: "#scratch" },
+  { label: "Алфавит", href: "/alphabet" },
+  { label: "Контакты", href: "#contacts" },
+];
+
+/* ──────────── ПАДАЮЩИЕ СЛОВА ──────────── */
+const FALLING_WORDS = ["ОМСК", "СИБИРЬ", "ИРТЫШ", "АВАНГАРД", "ИСТОРИЯ", "ПУТЕШЕСТВИЕ", "ОТКРЫТИЕ", "ТРАДИЦИИ"];
+
+function FallingWords() {
+  const [items, setItems] = useState<{ id: number; word: string; x: number; delay: number; duration: number }[]>([]);
+
+  useEffect(() => {
+    const created = FALLING_WORDS.map((word, i) => ({
+      id: i,
+      word,
+      x: 5 + (i * 12) % 90,
+      delay: i * 0.7,
+      duration: 4 + (i % 3),
+    }));
+    setItems(created);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {items.map((item) => (
+        <div
+          key={item.id}
+          className="absolute font-bold opacity-0"
+          style={{
+            left: `${item.x}%`,
+            top: "-60px",
+            fontFamily: "Cormorant Garamond, serif",
+            fontSize: "clamp(16px, 2.5vw, 28px)",
+            color: "rgba(255,215,0,0.18)",
+            animation: `wordFall ${item.duration}s ease-in ${item.delay}s infinite`,
+            letterSpacing: "0.2em",
+          }}
+        >
+          {item.word}
+        </div>
+      ))}
+    </div>
   );
 }
 
 /* ──────────── ГЛАВНЫЙ КОМПОНЕНТ ──────────── */
 export default function Index() {
+  const [navOpen, setNavOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+  const { visible, register } = useScrollReveal();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -783,469 +390,1100 @@ export default function Index() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting && e.target.id) {
-            setVisibleSections((prev) => new Set([...prev, e.target.id]));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll("[data-animate]").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  const isVisible = (id: string) => visibleSections.has(id);
+  const scrollTo = (href: string) => {
+    if (href.startsWith("/")) return;
+    setNavOpen(false);
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden" style={{ fontFamily: "'Montserrat', sans-serif", background: "#060e1e" }}>
-      <MainHeroBanner />
-      <AnimatedSkyBackground />
+    <div
+      style={{
+        background: "#060d1f",
+        color: "#e8eaf0",
+        fontFamily: "Montserrat, sans-serif",
+        overflowX: "hidden",
+      }}
+    >
+      {/* ═══ CSS АНИМАЦИИ ═══ */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700;800&display=swap');
 
-      {/* ══════════════ НАВИГАЦИЯ ══════════════ */}
+        @keyframes wordFall {
+          0% { opacity: 0; transform: translateY(-60px) rotate(-3deg); }
+          10% { opacity: 1; }
+          90% { opacity: 0.8; }
+          100% { opacity: 0; transform: translateY(110vh) rotate(3deg); }
+        }
+        @keyframes heroGlow {
+          0%, 100% { text-shadow: 0 0 40px rgba(255,215,0,0.3), 0 0 80px rgba(255,215,0,0.1); }
+          50% { text-shadow: 0 0 60px rgba(255,215,0,0.5), 0 0 120px rgba(255,215,0,0.2); }
+        }
+        @keyframes goldPulse {
+          0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.3); }
+          50% { box-shadow: 0 0 40px rgba(255,215,0,0.6), 0 0 80px rgba(255,215,0,0.2); }
+        }
+        @keyframes revealUp {
+          from { opacity: 0; transform: translateY(50px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes revealLeft {
+          from { opacity: 0; transform: translateX(-50px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes revealRight {
+          from { opacity: 0; transform: translateX(50px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes starFloat {
+          0%, 100% { opacity: 0.2; transform: scale(1); }
+          50% { opacity: 0.9; transform: scale(1.5); }
+        }
+        @keyframes lineExpand {
+          from { width: 0; }
+          to { width: 80px; }
+        }
+        @keyframes cardHover {
+          from { transform: translateY(0) scale(1); }
+          to { transform: translateY(-8px) scale(1.01); }
+        }
+        .reveal-up { animation: revealUp 0.8s ease-out forwards; }
+        .reveal-left { animation: revealLeft 0.8s ease-out forwards; }
+        .reveal-right { animation: revealRight 0.8s ease-out forwards; }
+        .hero-glow { animation: heroGlow 3s ease-in-out infinite; }
+        .gold-pulse { animation: goldPulse 2s ease-in-out infinite; }
+        .service-card { transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .service-card:hover { transform: translateY(-10px); }
+        .attr-card { transition: all 0.4s ease; }
+        .attr-card:hover { transform: translateY(-6px); }
+        .nav-link { position: relative; }
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 1px;
+          background: #FFD700;
+          transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+        .section-divider {
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(255,215,0,0.4), transparent);
+          margin: 0;
+        }
+      `}</style>
+
+      {/* ═══ НАВИГАЦИЯ ═══ */}
       <nav
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
         style={{
-          background: scrolled ? "rgba(6,14,30,0.95)" : "transparent",
-          backdropFilter: scrolled ? "blur(20px)" : "none",
+          background: scrolled
+            ? "rgba(6,13,31,0.97)"
+            : "linear-gradient(180deg, rgba(6,13,31,0.95) 0%, transparent 100%)",
           borderBottom: scrolled ? "1px solid rgba(255,215,0,0.15)" : "none",
-          padding: scrolled ? "12px 0" : "20px 0",
+          backdropFilter: scrolled ? "blur(20px)" : "none",
         }}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 md:h-20">
+          {/* Лого */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center text-xl" style={{ background: "linear-gradient(135deg, #FFD700, #FFA500)" }}>
-              🛡️
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
+              style={{
+                background: "linear-gradient(135deg, #FFD700, #FFA500)",
+                boxShadow: "0 0 20px rgba(255,215,0,0.4)",
+              }}
+            >
+              🏙️
             </div>
             <div>
-              <div className="font-bold text-white text-sm tracking-wide">Омск под защитой</div>
-              <div className="text-xs text-yellow-400/70">Сириус-55</div>
+              <div
+                style={{
+                  fontFamily: "Cormorant Garamond, serif",
+                  fontSize: 20,
+                  fontWeight: 700,
+                  color: "#FFD700",
+                  lineHeight: 1,
+                }}
+              >
+                Омск
+              </div>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", letterSpacing: "0.15em" }}>
+                INSIDER GUIDE
+              </div>
             </div>
           </div>
+
+          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
-            {[["#banner", "Баннер"], ["#about", "О проекте"], ["#strategy", "Стратегия"], ["#map", "Карта"], ["#booking", "Экскурсии"]].map(([href, label]) => (
-              <a
-                key={href}
-                href={href}
-                className="text-sm font-medium text-white/70 hover:text-yellow-400 transition-colors duration-200 tracking-wide"
-              >
-                {label}
-              </a>
-            ))}
+            {NAV_ITEMS.map((item) =>
+              item.href.startsWith("/") ? (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className="nav-link"
+                  style={{ color: "rgba(255,255,255,0.8)", fontSize: 14, fontWeight: 500, letterSpacing: "0.05em" }}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.label}
+                  onClick={() => scrollTo(item.href)}
+                  className="nav-link"
+                  style={{ color: "rgba(255,255,255,0.8)", fontSize: 14, fontWeight: 500, letterSpacing: "0.05em", background: "none", border: "none", cursor: "pointer" }}
+                >
+                  {item.label}
+                </button>
+              )
+            )}
+            <button
+              onClick={() => scrollTo("#contacts")}
+              className="px-5 py-2 rounded-full text-sm font-semibold transition-all"
+              style={{
+                background: "linear-gradient(135deg, #FFD700, #FFA500)",
+                color: "#0a0a0a",
+                boxShadow: "0 4px 15px rgba(255,165,0,0.4)",
+              }}
+            >
+              Записаться
+            </button>
           </div>
-          <a
-            href="#booking"
-            className="btn-gold px-5 py-2.5 rounded-full text-sm font-bold tracking-wide"
+
+          {/* Mobile burger */}
+          <button
+            className="md:hidden flex flex-col gap-1.5 p-2"
+            onClick={() => setNavOpen(!navOpen)}
           >
-            Забронировать тур
-          </a>
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className="block h-0.5 w-6 transition-all duration-300"
+                style={{
+                  background: "#FFD700",
+                  transform:
+                    navOpen && i === 0
+                      ? "rotate(45deg) translate(5px, 5px)"
+                      : navOpen && i === 1
+                      ? "scaleX(0)"
+                      : navOpen && i === 2
+                      ? "rotate(-45deg) translate(5px, -5px)"
+                      : "none",
+                }}
+              />
+            ))}
+          </button>
         </div>
+
+        {/* Mobile menu */}
+        {navOpen && (
+          <div
+            className="md:hidden px-4 pb-6 pt-2 flex flex-col gap-4"
+            style={{ background: "rgba(6,13,31,0.98)", borderTop: "1px solid rgba(255,215,0,0.15)" }}
+          >
+            {NAV_ITEMS.map((item) =>
+              item.href.startsWith("/") ? (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  onClick={() => setNavOpen(false)}
+                  style={{ color: "rgba(255,255,255,0.85)", fontSize: 16, fontWeight: 500 }}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.label}
+                  onClick={() => scrollTo(item.href)}
+                  style={{ color: "rgba(255,255,255,0.85)", fontSize: 16, fontWeight: 500, background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
+                >
+                  {item.label}
+                </button>
+              )
+            )}
+          </div>
+        )}
       </nav>
 
-      {/* ══════════════ HERO ══════════════ */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20 pb-10" style={{ zIndex: 1 }}>
-        <div
-          className="animate-fade-up"
-          style={{ animationDelay: "0.2s", opacity: 0, animationFillMode: "forwards" }}
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm font-semibold tracking-widest"
-               style={{ background: "rgba(255,215,0,0.15)", border: "1px solid rgba(255,215,0,0.4)", color: "#FFD700" }}>
-            🛡️ &nbsp;КОМАНДА «ОМСК ПОД ЗАЩИТОЙ» · СИРИУС-55
-          </div>
-        </div>
-
-        <h1
-          className="animate-fade-up"
-          style={{ animationDelay: "0.4s", opacity: 0, animationFillMode: "forwards", fontSize: "clamp(3rem, 9vw, 7rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.02em" }}
-        >
-          <span className="text-gradient-gold">ОМСК —</span>
-          <br />
-          <span className="text-white">Культурная</span>
-          <br />
-          <span className="text-white/80" style={{ fontStyle: "italic", fontWeight: 700 }}>столица России</span>
-        </h1>
-
-        <p
-          className="animate-fade-up mt-6 max-w-2xl text-white/60 text-lg leading-relaxed"
-          style={{ animationDelay: "0.6s", opacity: 0, animationFillMode: "forwards" }}
-        >
-          Проект по продвижению туристического потенциала Омска. 
-          Здесь начинается Сибирь — здесь живёт история, культура и душа.
-        </p>
-
-        <div
-          className="animate-fade-up flex flex-wrap gap-4 mt-10 justify-center"
-          style={{ animationDelay: "0.8s", opacity: 0, animationFillMode: "forwards" }}
-        >
-          <a href="#banner" className="btn-gold px-8 py-4 rounded-full text-base font-bold tracking-wide inline-flex items-center gap-2">
-            Смотреть баннер <span>↓</span>
-          </a>
-          <a href="#map" className="btn-outline-gold px-8 py-4 rounded-full text-base font-bold tracking-wide inline-flex items-center gap-2">
-            Карта достопримечательностей 🗺️
-          </a>
-        </div>
-
-        {/* Скролл-индикатор */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
-          <div className="w-6 h-10 rounded-full border-2 border-white/40 flex items-start justify-center pt-2">
-            <div className="w-1 h-2 rounded-full bg-yellow-400" />
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════ СТАТИСТИКА ══════════════ */}
-      <section className="relative py-10 px-6" style={{ zIndex: 1 }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="glass-dark rounded-2xl px-8 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-            {FACTS.map((f, i) => (
-              <div key={i} className="text-center">
-                <div className="text-gradient-gold font-black" style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)" }}>{f.value}</div>
-                <div className="text-white/50 text-sm mt-1 tracking-wide">{f.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════ БАННЕР ══════════════ */}
-      <section id="banner" className="relative py-20 px-6" style={{ zIndex: 1 }}>
-        <div className="max-w-6xl mx-auto">
-          <div
-            id="banner-title"
-            data-animate
-            className={`text-center mb-12 transition-all duration-700 ${isVisible("banner-title") ? "animate-fade-up" : "opacity-0"}`}
-          >
-            <div className="inline-flex items-center gap-2 text-yellow-400 text-sm font-semibold tracking-widest mb-3">
-              <span className="w-8 h-px bg-yellow-400" /> НАШ РЕКЛАМНЫЙ БАННЕР <span className="w-8 h-px bg-yellow-400" />
-            </div>
-            <h2 className="text-white font-black" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
-              Приглашение в <span className="text-gradient-gold">Омск</span>
-            </h2>
-            <p className="text-white/50 mt-3 max-w-2xl mx-auto text-base leading-relaxed">
-              Рекламный баннер команды «Омск под защитой» — визуальная концепция продвижения города 
-              как туристической и культурной дестинации федерального масштаба.
-            </p>
-          </div>
-
-          <div className="flex flex-col lg:flex-row gap-12 items-center">
-            {/* Баннер */}
+      {/* ═══ HERO ═══ */}
+      <section
+        id="hero"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        style={{
+          background: "linear-gradient(160deg, #060d1f 0%, #0d1b3e 40%, #0a1628 70%, #060d1f 100%)",
+        }}
+      >
+        {/* Звёзды */}
+        <div className="absolute inset-0 pointer-events-none">
+          {Array.from({ length: 80 }).map((_, i) => (
             <div
-              id="banner-img"
-              data-animate
-              className={`flex-shrink-0 transition-all duration-800 ${isVisible("banner-img") ? "animate-slide-left" : "opacity-0"}`}
-              style={{ maxWidth: "480px", width: "100%" }}
-            >
-              <div className="animate-banner-glow rounded-2xl overflow-hidden">
-                <img
-                  src="https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/a87a3988-7adc-4721-bbbb-c590446f2da9.png"
-                  alt="Рекламный баннер «Омск под защитой»"
-                  className="w-full h-auto"
-                  style={{ display: "block" }}
-                />
-              </div>
-            </div>
-
-            {/* Описание баннера */}
-            <div
-              id="banner-desc"
-              data-animate
-              className={`flex-1 transition-all duration-800 ${isVisible("banner-desc") ? "animate-slide-right" : "opacity-0"}`}
-            >
-              <h3 className="text-white font-bold text-2xl mb-6">Что говорит наш баннер?</h3>
-              <div className="space-y-5">
-                {[
-                  { emoji: "🏙️", title: "Образ города", text: "Баннер объединяет главные символы Омска: G-Drive Арена, хоккейный клуб «Авангард», ФК «Иртыш» — создавая образ живого, спортивного и гостеприимного города." },
-                  { emoji: "⭐", title: "Ключевые привлекательности", text: "История, культура, отдых у Иртыша, архитектура, Омская крепость и туристический центр — шесть точек притяжения для любого путешественника." },
-                  { emoji: "🎯", title: "Целевое послание", text: "«Омск — здесь начинается Сибирь» — слоган, закрепляющий за Омском статус ворот в Сибирь и отправной точки всех сибирских путешествий." },
-                  { emoji: "🛡️", title: "Фирменный стиль", text: "Синий туристический автобус с надписью «Омск под защитой» — метафора надёжного, комфортного и защищённого туризма в нашем городе." },
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-4 glass-card rounded-xl p-4 hover:border-yellow-400/30 transition-all duration-200">
-                    <div className="text-3xl flex-shrink-0">{item.emoji}</div>
-                    <div>
-                      <div className="text-yellow-400 font-bold text-sm mb-1">{item.title}</div>
-                      <div className="text-white/60 text-sm leading-relaxed">{item.text}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+              key={i}
+              className="absolute rounded-full"
+              style={{
+                width: Math.random() * 2.5 + 0.5 + "px",
+                height: Math.random() * 2.5 + 0.5 + "px",
+                left: Math.random() * 100 + "%",
+                top: Math.random() * 100 + "%",
+                background: "#fff",
+                animation: `starFloat ${2 + Math.random() * 4}s ease-in-out ${Math.random() * 5}s infinite`,
+              }}
+            />
+          ))}
         </div>
-      </section>
 
-      {/* ══════════════ О ПРОЕКТЕ ══════════════ */}
-      <section id="about" className="relative py-20 px-6" style={{ zIndex: 1 }}>
-        <div className="max-w-6xl mx-auto">
+        {/* Орнамент */}
+        <div
+          className="absolute top-0 left-0 w-full h-full pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 50% at 50% 20%, rgba(255,215,0,0.07) 0%, transparent 70%)",
+          }}
+        />
+
+        {/* Падающие слова */}
+        <FallingWords />
+
+        {/* Контент */}
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center py-32">
           <div
-            id="about-title"
-            data-animate
-            className={`text-center mb-14 transition-all duration-700 ${isVisible("about-title") ? "animate-fade-up" : "opacity-0"}`}
+            className="inline-block mb-6 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest"
+            style={{
+              background: "rgba(255,215,0,0.1)",
+              border: "1px solid rgba(255,215,0,0.4)",
+              color: "#FFD700",
+              animation: "revealUp 0.6s ease-out forwards",
+            }}
           >
-            <div className="inline-flex items-center gap-2 text-yellow-400 text-sm font-semibold tracking-widest mb-3">
-              <span className="w-8 h-px bg-yellow-400" /> НАША МИССИЯ <span className="w-8 h-px bg-yellow-400" />
-            </div>
-            <h2 className="text-white font-black" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
-              Зачем нужен <span className="text-gradient-gold">этот проект?</span>
-            </h2>
+            ✦ ПЕРСОНАЛЬНЫЙ ГИД ПО ОМСКУ ✦
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {[
-              {
-                icon: "🏛️",
-                title: "Богатое культурное наследие",
-                text: "Омск обладает уникальным культурным капиталом: город Достоевского, великолепная архитектура XIX–XX веков, развитая театральная и музейная среда, центр сибирского искусства.",
+          <h1
+            className="hero-glow mb-6"
+            style={{
+              fontFamily: "Cormorant Garamond, serif",
+              fontSize: "clamp(48px, 10vw, 110px)",
+              fontWeight: 700,
+              lineHeight: 0.9,
+              color: "#fff",
+              animation: "revealUp 0.8s ease-out 0.2s both",
+            }}
+          >
+            <span style={{ color: "#FFD700" }}>ОМСК</span>
+            <br />
+            <span style={{ fontSize: "0.55em", letterSpacing: "0.15em", color: "rgba(255,255,255,0.9)" }}>
+              ИЗНУТРИ
+            </span>
+          </h1>
+
+          <p
+            className="max-w-2xl mx-auto mb-10 leading-relaxed"
+            style={{
+              color: "rgba(255,255,255,0.7)",
+              fontSize: "clamp(15px, 2.5vw, 18px)",
+              animation: "revealUp 0.8s ease-out 0.4s both",
+            }}
+          >
+            Я — местный, который знает каждый закоулок города. Покажу вам настоящий Омск: без
+            скучных путеводителей, зато с историями, которые помнят только старожилы.
+          </p>
+
+          <div
+            className="flex flex-wrap gap-4 justify-center"
+            style={{ animation: "revealUp 0.8s ease-out 0.6s both" }}
+          >
+            <button
+              onClick={() => scrollTo("#services")}
+              className="px-8 py-4 rounded-full font-bold text-base transition-all hover:scale-105"
+              style={{
+                background: "linear-gradient(135deg, #FFD700, #FFA500)",
+                color: "#0a0a0a",
+                boxShadow: "0 8px 30px rgba(255,165,0,0.5)",
+              }}
+            >
+              Выбрать тур
+            </button>
+            <button
+              onClick={() => scrollTo("#omsk")}
+              className="px-8 py-4 rounded-full font-semibold text-base transition-all hover:scale-105"
+              style={{
+                border: "2px solid rgba(255,215,0,0.5)",
                 color: "#FFD700",
-              },
-              {
-                icon: "📉",
-                title: "Проблема узнаваемости",
-                text: "Несмотря на богатый культурный потенциал, Омск не воспринимается как значимая туристическая дестинация. Туристический поток в разы ниже сопоставимых городов.",
-                color: "#F97316",
-              },
-              {
-                icon: "📣",
-                title: "Отсутствие бренда",
-                text: "Нет единого узнаваемого бренда, нет системной рекламной стратегии. Культурное наследие практически не используется в маркетинговых коммуникациях.",
-                color: "#E879F9",
-              },
-              {
-                icon: "🚀",
-                title: "Наше решение",
-                text: "Разработка рекламной кампании, направленной на продвижение имиджа Омска как «Культурной столицы России» для существенного увеличения туристического потока.",
-                color: "#4ADE80",
-              },
-            ].map((card, i) => (
-              <div
-                key={i}
-                id={`about-card-${i}`}
-                data-animate
-                className={`glass-dark rounded-2xl p-7 hover:border-yellow-400/20 transition-all duration-500 ${isVisible(`about-card-${i}`) ? "animate-fade-up" : "opacity-0"}`}
-                style={{ animationDelay: `${i * 0.15}s` }}
-              >
-                <div className="text-4xl mb-4">{card.icon}</div>
-                <h3 className="font-bold text-lg mb-3" style={{ color: card.color }}>{card.title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{card.text}</p>
-              </div>
-            ))}
+                background: "rgba(255,215,0,0.05)",
+              }}
+            >
+              Узнать об Омске
+            </button>
           </div>
 
-          {/* Цитата */}
-          <div className="glass-card rounded-2xl p-8 text-center border-yellow-400/20">
-            <div className="text-5xl mb-4">✍️</div>
-            <blockquote className="text-white/80 text-xl italic leading-relaxed max-w-3xl mx-auto">
-              «Омск обладает уникальным культурным капиталом, способным стать основой для формирования 
-              бренда <span className="text-yellow-400 not-italic font-bold">«Культурная столица России»</span>»
-            </blockquote>
-            <div className="mt-4 text-white/40 text-sm">— Концепция проекта «Омск под защитой», Сириус-55</div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════ СТРАТЕГИЯ ══════════════ */}
-      <section id="strategy" className="relative py-20 px-6" style={{ zIndex: 1 }}>
-        <div className="max-w-6xl mx-auto">
+          {/* Факты */}
           <div
-            id="strategy-title"
-            data-animate
-            className={`text-center mb-14 transition-all duration-700 ${isVisible("strategy-title") ? "animate-fade-up" : "opacity-0"}`}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 max-w-3xl mx-auto"
+            style={{ animation: "revealUp 0.8s ease-out 0.9s both" }}
           >
-            <div className="inline-flex items-center gap-2 text-yellow-400 text-sm font-semibold tracking-widest mb-3">
-              <span className="w-8 h-px bg-yellow-400" /> КАК УВЕЛИЧИТЬ ТУРИСТИЧЕСКИЙ ПОТОК <span className="w-8 h-px bg-yellow-400" />
-            </div>
-            <h2 className="text-white font-black" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
-              Стратегия <span className="text-gradient-gold">продвижения</span>
-            </h2>
-            <p className="text-white/50 mt-4 max-w-2xl mx-auto">
-              Шесть ключевых направлений рекламной кампании, которые превратят Омск 
-              в топовую туристическую дестинацию России
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {STRATEGIES.map((s, i) => (
-              <div
-                key={i}
-                id={`strat-${i}`}
-                data-animate
-                className={`glass-dark rounded-2xl p-7 group hover:border-yellow-400/30 hover:-translate-y-1 transition-all duration-300 cursor-default ${isVisible(`strat-${i}`) ? "animate-fade-up" : "opacity-0"}`}
-                style={{ animationDelay: `${i * 0.1}s` }}
-              >
-                <div className="text-4xl mb-5">{s.icon}</div>
-                <h3 className="text-white font-bold text-lg mb-3 group-hover:text-yellow-400 transition-colors">{s.title}</h3>
-                <p className="text-white/55 text-sm leading-relaxed">{s.text}</p>
-                <div className="mt-5 h-0.5 w-0 group-hover:w-full transition-all duration-500 rounded-full" style={{ background: "linear-gradient(90deg, #FFD700, transparent)" }} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════ КАРТА ══════════════ */}
-      <section id="map" className="relative py-20 px-6" style={{ zIndex: 1 }}>
-        <div className="max-w-6xl mx-auto">
-          <div
-            id="map-title"
-            data-animate
-            className={`text-center mb-12 transition-all duration-700 ${isVisible("map-title") ? "animate-fade-up" : "opacity-0"}`}
-          >
-            <div className="inline-flex items-center gap-2 text-yellow-400 text-sm font-semibold tracking-widest mb-3">
-              <span className="w-8 h-px bg-yellow-400" /> ДОСТОПРИМЕЧАТЕЛЬНОСТИ <span className="w-8 h-px bg-yellow-400" />
-            </div>
-            <h2 className="text-white font-black" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
-              Карта <span className="text-gradient-gold">культурного Омска</span>
-            </h2>
-            <p className="text-white/50 mt-3 max-w-2xl mx-auto">
-              Нажмите на любой маркер, чтобы узнать о достопримечательности и открыть её в навигационном приложении
-            </p>
-          </div>
-
-          <div
-            id="map-container"
-            data-animate
-            className={`transition-all duration-800 ${isVisible("map-container") ? "animate-fade-up" : "opacity-0"}`}
-          >
-            <OmskMap />
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════ БРОНИРОВАНИЕ ══════════════ */}
-      <section id="booking" className="relative py-24 px-6" style={{ zIndex: 1 }}>
-        <div className="max-w-5xl mx-auto">
-          <div
-            id="booking-title"
-            data-animate
-            className={`text-center mb-14 transition-all duration-700 ${isVisible("booking-title") ? "animate-fade-up" : "opacity-0"}`}
-          >
-            <div className="inline-flex items-center gap-2 text-yellow-400 text-sm font-semibold tracking-widest mb-3">
-              <span className="w-8 h-px bg-yellow-400" /> ПЛАНИРУЙ ПУТЕШЕСТВИЕ <span className="w-8 h-px bg-yellow-400" />
-            </div>
-            <h2 className="text-white font-black" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
-              Забронировать <span className="text-gradient-gold">экскурсии в Омске</span>
-            </h2>
-            <p className="text-white/50 mt-4 max-w-2xl mx-auto text-base leading-relaxed">
-              Откройте для себя всё богатство культурного наследия Омска вместе с профессиональными гидами. 
-              Пешие туры, речные прогулки, исторические маршруты.
-            </p>
-          </div>
-
-          {/* Карточки экскурсий */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
             {[
-              {
-                emoji: "🏰",
-                title: "История Омска",
-                desc: "Омская крепость, острог, где был Достоевский, исторический центр города. 2–3 часа.",
-                price: "от 600 ₽",
-                tag: "Популярное",
-              },
-              {
-                emoji: "🎭",
-                title: "Театральный Омск",
-                desc: "Посещение театра драмы, Музыкального театра и экскурсия по культурным объектам. 3–4 часа.",
-                price: "от 800 ₽",
-                tag: "Культура",
-              },
-              {
-                emoji: "🌊",
-                title: "Иртышская прогулка",
-                desc: "Речная экскурсия по Иртышу с рассказом об истории города с воды. 1.5–2 часа.",
-                price: "от 1 200 ₽",
-                tag: "Природа",
-              },
-            ].map((tour, i) => (
+              { val: "300+", lab: "лет истории" },
+              { val: "1.1M", lab: "жителей" },
+              { val: "4 года", lab: "Достоевский в Омске" },
+              { val: "Top-3", lab: "театров Сибири" },
+            ].map((f) => (
               <div
-                key={i}
-                id={`tour-${i}`}
-                data-animate
-                className={`glass-dark rounded-2xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 ${isVisible(`tour-${i}`) ? "animate-fade-up" : "opacity-0"}`}
-                style={{ animationDelay: `${i * 0.15}s` }}
+                key={f.lab}
+                className="py-4 px-2 rounded-2xl text-center"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,215,0,0.15)",
+                }}
               >
-                <div className="p-6">
+                <div
+                  style={{
+                    fontFamily: "Cormorant Garamond, serif",
+                    fontSize: 32,
+                    fontWeight: 700,
+                    color: "#FFD700",
+                  }}
+                >
+                  {f.val}
+                </div>
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginTop: 2 }}>
+                  {f.lab}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Скролл индикатор */}
+        <div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          style={{ animation: "revealUp 1s ease-out 1.2s both" }}
+        >
+          <div style={{ fontSize: 11, color: "rgba(255,215,0,0.6)", letterSpacing: "0.2em" }}>
+            ЛИСТАЙ ВНИЗ
+          </div>
+          <div
+            className="w-6 h-10 rounded-full flex items-start justify-center p-1"
+            style={{ border: "2px solid rgba(255,215,0,0.4)" }}
+          >
+            <div
+              className="w-1 h-2 rounded-full"
+              style={{
+                background: "#FFD700",
+                animation: "revealUp 1.5s ease-in-out infinite",
+              }}
+            />
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* ═══ УСЛУГИ ═══ */}
+      <section id="services" className="py-24 px-4 sm:px-6" style={{ background: "linear-gradient(180deg, #060d1f, #0a1628)" }}>
+        <div className="max-w-7xl mx-auto">
+          {/* Заголовок */}
+          <div
+            ref={(el) => register(0)(el as HTMLElement | null)}
+            className="text-center mb-16"
+            style={{ opacity: 0, ...(visible[0] ? { animation: "revealUp 0.8s ease-out forwards" } : {}) }}
+          >
+            <div
+              className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest"
+              style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700" }}
+            >
+              ✦ МОИ УСЛУГИ ✦
+            </div>
+            <h2
+              style={{
+                fontFamily: "Cormorant Garamond, serif",
+                fontSize: "clamp(36px, 6vw, 64px)",
+                fontWeight: 700,
+                color: "#fff",
+                marginBottom: 16,
+              }}
+            >
+              Выберите своё{" "}
+              <span style={{ color: "#FFD700" }}>приключение</span>
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.55)", maxWidth: 560, margin: "0 auto", fontSize: 16 }}>
+              Три уникальных формата знакомства с Омском — каждый разработан для того,
+              чтобы вы влюбились в этот город
+            </p>
+          </div>
+
+          {/* Карточки услуг */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {SERVICES.map((svc, i) => (
+              <div
+                key={svc.id}
+                ref={(el) => register(1 + i)(el as HTMLElement | null)}
+                className="service-card rounded-3xl overflow-hidden relative flex flex-col"
+                style={{
+                  opacity: 0,
+                  background: "linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
+                  border: `1px solid rgba(255,215,0,0.15)`,
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+                  ...(visible[1 + i]
+                    ? {
+                        animation: `revealUp 0.8s ease-out ${i * 0.15}s forwards`,
+                      }
+                    : {}),
+                }}
+              >
+                {/* Верхняя часть */}
+                <div
+                  className="p-6 pb-4"
+                  style={{
+                    background: `linear-gradient(135deg, ${svc.accentColor}22, transparent)`,
+                    borderBottom: `1px solid rgba(255,215,0,0.1)`,
+                  }}
+                >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="text-4xl">{tour.emoji}</div>
-                    <span className="text-xs font-bold px-3 py-1 rounded-full" style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700", border: "1px solid rgba(255,215,0,0.3)" }}>
-                      {tour.tag}
+                    <div
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+                      style={{
+                        background: `${svc.accentColor}22`,
+                        border: `1px solid ${svc.accentColor}44`,
+                      }}
+                    >
+                      {svc.icon}
+                    </div>
+                    <span
+                      className="px-3 py-1 rounded-full text-xs font-semibold"
+                      style={{
+                        background: `${svc.accentColor}22`,
+                        border: `1px solid ${svc.accentColor}44`,
+                        color: svc.accentColor,
+                      }}
+                    >
+                      {svc.badge}
                     </span>
                   </div>
-                  <h3 className="text-white font-bold text-lg mb-2 group-hover:text-yellow-400 transition-colors">{tour.title}</h3>
-                  <p className="text-white/55 text-sm leading-relaxed mb-4">{tour.desc}</p>
-                  <div className="text-yellow-400 font-black text-xl">{tour.price}</div>
+                  <h3
+                    style={{
+                      fontFamily: "Cormorant Garamond, serif",
+                      fontSize: 24,
+                      fontWeight: 700,
+                      color: "#fff",
+                      marginBottom: 4,
+                    }}
+                  >
+                    {svc.title}
+                  </h3>
+                  <div style={{ fontSize: 13, color: svc.accentColor, fontWeight: 500 }}>{svc.subtitle}</div>
                 </div>
-                <div className="h-0.5 w-0 group-hover:w-full transition-all duration-500" style={{ background: "linear-gradient(90deg, #FFD700, transparent)" }} />
+
+                {/* Описание */}
+                <div className="p-6 flex-1 flex flex-col gap-4">
+                  <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, lineHeight: 1.7 }}>
+                    {svc.desc}
+                  </p>
+
+                  {/* Включено */}
+                  <div>
+                    <div
+                      className="text-xs font-semibold tracking-widest mb-3"
+                      style={{ color: "rgba(255,215,0,0.7)" }}
+                    >
+                      ВКЛЮЧЕНО:
+                    </div>
+                    <ul className="flex flex-col gap-2">
+                      {svc.includes.map((inc) => (
+                        <li key={inc} className="flex items-start gap-2 text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>
+                          <span style={{ color: svc.accentColor, marginTop: 2, flexShrink: 0 }}>✓</span>
+                          {inc}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Цена и кнопка */}
+                  <div className="mt-auto pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                    <div className="flex items-center gap-2 mb-4">
+                      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>ЦЕНА:</span>
+                      <span style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>
+                        {svc.price}
+                      </span>
+                    </div>
+                    <Link
+                      to={svc.payPath}
+                      className="w-full block text-center py-3.5 rounded-2xl font-bold text-sm transition-all hover:scale-105"
+                      style={{
+                        background: `linear-gradient(135deg, ${svc.accentColor}, ${svc.accentColor}bb)`,
+                        color: "#fff",
+                        boxShadow: `0 4px 20px ${svc.accentColor}44`,
+                      }}
+                    >
+                      Купить / Записаться →
+                    </Link>
+                  </div>
+                </div>
               </div>
             ))}
-          </div>
-
-          {/* CTA блок */}
-          <div
-            id="cta"
-            data-animate
-            className={`glass-dark rounded-3xl p-10 text-center transition-all duration-700 ${isVisible("cta") ? "animate-fade-up" : "opacity-0"}`}
-            style={{ border: "1px solid rgba(255,215,0,0.25)", boxShadow: "0 0 60px rgba(255,215,0,0.08)" }}
-          >
-            <div className="text-6xl mb-5">🗺️</div>
-            <h3 className="text-white font-black text-3xl mb-3">
-              Готовы открыть <span className="text-gradient-gold">Омск?</span>
-            </h3>
-            <p className="text-white/55 text-base mb-8 max-w-xl mx-auto leading-relaxed">
-              Перейдите на платформу бронирования экскурсий, выберите интересующий маршрут 
-              и запланируйте незабываемое путешествие в сердце Сибири.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="https://omsk.tripster.ru/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-gold px-10 py-5 rounded-full text-lg font-black tracking-wide inline-flex items-center gap-3 justify-center"
-              >
-                🎒 Забронировать экскурсию
-              </a>
-              <a
-                href="https://yandex.ru/maps/66/omsk/search/экскурсии+в+Омске/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-outline-gold px-8 py-5 rounded-full text-base font-bold inline-flex items-center gap-3 justify-center"
-              >
-                🗺 Найти на карте
-              </a>
-            </div>
-            <p className="text-white/30 text-xs mt-5">
-              * После настройки системы бронирования кнопка будет перенаправлять на партнёрский сервис
-            </p>
           </div>
         </div>
       </section>
 
-      {/* ══════════════ ФУТЕР ══════════════ */}
-      <footer className="relative py-12 px-6" style={{ zIndex: 1, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center text-xl" style={{ background: "linear-gradient(135deg, #FFD700, #FFA500)" }}>
-                🛡️
-              </div>
-              <div>
-                <div className="text-white font-bold">Омск под защитой</div>
-                <div className="text-white/40 text-xs">Региональная профильная смена «Сириус-55»</div>
-              </div>
+      <div className="section-divider" />
+
+      {/* ═══ ОБ ОМСКЕ ═══ */}
+      <section id="omsk" className="py-24 px-4 sm:px-6" style={{ background: "#060d1f" }}>
+        <div className="max-w-7xl mx-auto">
+          {/* Заголовок */}
+          <div
+            ref={(el) => register(4)(el as HTMLElement | null)}
+            className="text-center mb-16"
+            style={{ opacity: 0, ...(visible[4] ? { animation: "revealUp 0.8s ease-out forwards" } : {}) }}
+          >
+            <div
+              className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest"
+              style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700" }}
+            >
+              ✦ СЕРДЦЕ СИБИРИ ✦
             </div>
-            <div className="text-center">
-              <div className="text-gradient-gold font-bold text-lg">Омск — здесь начинается Сибирь.</div>
-              <div className="text-white/40 text-sm mt-1">Рекламная кампания · 2025</div>
+            <h2
+              style={{
+                fontFamily: "Cormorant Garamond, serif",
+                fontSize: "clamp(36px, 6vw, 64px)",
+                fontWeight: 700,
+                color: "#fff",
+                marginBottom: 16,
+              }}
+            >
+              Почему{" "}
+              <span style={{ color: "#FFD700" }}>Омск</span>
+              {" "}удивляет
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.55)", maxWidth: 600, margin: "0 auto", fontSize: 16 }}>
+              Второй по величине город Сибири скрывает столько историй, что одной жизни не хватит, чтобы узнать их все
+            </p>
+          </div>
+
+          {/* Текстовый блок + интересные факты */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <div
+              ref={(el) => register(5)(el as HTMLElement | null)}
+              className="rounded-3xl p-8"
+              style={{
+                opacity: 0,
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,215,0,0.15)",
+                ...(visible[5] ? { animation: "revealLeft 0.8s ease-out forwards" } : {}),
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: "Cormorant Garamond, serif",
+                  fontSize: 28,
+                  fontWeight: 700,
+                  color: "#FFD700",
+                  marginBottom: 16,
+                }}
+              >
+                Город, где Достоевский стал Достоевским
+              </h3>
+              <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: 16 }}>
+                Фёдор Михайлович провёл в Омском остроге 4 тяжелейших года. Именно здесь, среди
+                каторжников, он написал «Записки из Мёртвого дома» — книгу, которая потрясла весь
+                просвещённый мир. Омск буквально вылепил того Достоевского, которого мы знаем.
+              </p>
+              <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8 }}>
+                Город стоит на слиянии двух рек — Оми и Иртыша. В XVIII веке это была пограничная
+                крепость, защищавшая Россию от степных набегов. Сегодня это мегаполис с богатейшей
+                культурной жизнью, театрами мирового уровня и молодёжью, которая не хочет уезжать.
+              </p>
             </div>
-            <div className="flex gap-4">
-              <a href="#" className="text-white/40 hover:text-yellow-400 transition-colors text-sm">О проекте</a>
-              <a href="#map" className="text-white/40 hover:text-yellow-400 transition-colors text-sm">Карта</a>
-              <a href="#booking" className="text-white/40 hover:text-yellow-400 transition-colors text-sm">Экскурсии</a>
+
+            <div
+              ref={(el) => register(6)(el as HTMLElement | null)}
+              className="rounded-3xl p-8"
+              style={{
+                opacity: 0,
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,215,0,0.15)",
+                ...(visible[6] ? { animation: "revealRight 0.8s ease-out forwards" } : {}),
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: "Cormorant Garamond, serif",
+                  fontSize: 28,
+                  fontWeight: 700,
+                  color: "#FFD700",
+                  marginBottom: 16,
+                }}
+              >
+                10 фактов, которые вас удивят
+              </h3>
+              <ul className="flex flex-col gap-3">
+                {[
+                  "🏰 Омской крепости — более 300 лет",
+                  "📚 Достоевский провёл здесь 4 года каторги",
+                  "🎭 Театр драмы основан в 1874 году — старше многих европейских",
+                  "🌊 Иртыш — один из крупнейших притоков Оби",
+                  "🏒 ХК «Авангард» — многократный чемпион КХЛ",
+                  "🎨 Музей Врубеля хранит 30 000+ экспонатов",
+                  "🌡️ Зимой бывает до −40°C — сибирский закал!",
+                  "🍽️ Омские пельмени — особый рецепт с говядиной и свининой",
+                  "⛪ 14 православных церквей в историческом центре",
+                  "🌆 Любинский проспект — «Омский Арбат»",
+                ].map((fact) => (
+                  <li key={fact} className="flex items-start gap-2 text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>
+                    {fact}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-          <div className="mt-8 pt-6 text-center text-white/20 text-xs" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-            © 2025 «Омск под защитой» · Сириус-55 · Проектная деятельность в рамках регионального «Сириуса»
+
+          {/* Тизер алфавита */}
+          <div
+            ref={(el) => register(7)(el as HTMLElement | null)}
+            className="rounded-3xl p-8 md:p-12 text-center relative overflow-hidden"
+            style={{
+              opacity: 0,
+              background: "linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,165,0,0.04))",
+              border: "1px solid rgba(255,215,0,0.25)",
+              ...(visible[7] ? { animation: "revealUp 0.8s ease-out forwards" } : {}),
+            }}
+          >
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(255,215,0,0.06), transparent)",
+              }}
+            />
+            <div className="relative z-10">
+              <div className="text-4xl mb-4">🎮</div>
+              <h3
+                style={{
+                  fontFamily: "Cormorant Garamond, serif",
+                  fontSize: "clamp(24px, 4vw, 40px)",
+                  fontWeight: 700,
+                  color: "#fff",
+                  marginBottom: 12,
+                }}
+              >
+                Скучно читать?{" "}
+                <span style={{ color: "#FFD700" }}>Поиграй!</span>
+              </h3>
+              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 16, maxWidth: 500, margin: "0 auto 24px" }}>
+                Разгадай «Омский Алфавит приключений» — 33 буквы, 33 причины влюбиться в этот город. С
+                историями, юмором и секретами инсайдера!
+              </p>
+              <Link
+                to="/alphabet"
+                className="inline-block px-8 py-4 rounded-full font-bold text-base transition-all hover:scale-105"
+                style={{
+                  background: "linear-gradient(135deg, #FFD700, #FFA500)",
+                  color: "#0a0a0a",
+                  boxShadow: "0 8px 30px rgba(255,165,0,0.4)",
+                }}
+              >
+                🔤 Начать игру — Омский Алфавит
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* ═══ СКРЕТЧ-КАРТА ═══ */}
+      <section
+        id="scratch"
+        className="py-24 px-4 sm:px-6"
+        style={{ background: "linear-gradient(180deg, #060d1f, #0a1628 50%, #060d1f)" }}
+      >
+        <div className="max-w-2xl mx-auto">
+          <div
+            ref={(el) => register(8)(el as HTMLElement | null)}
+            className="text-center mb-12"
+            style={{ opacity: 0, ...(visible[8] ? { animation: "revealUp 0.8s ease-out forwards" } : {}) }}
+          >
+            <div
+              className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest"
+              style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700" }}
+            >
+              ✦ ДЛЯ НАШИХ ГОСТЕЙ ✦
+            </div>
+            <h2
+              style={{
+                fontFamily: "Cormorant Garamond, serif",
+                fontSize: "clamp(32px, 5vw, 52px)",
+                fontWeight: 700,
+                color: "#fff",
+                marginBottom: 12,
+              }}
+            >
+              Твой{" "}
+              <span style={{ color: "#FFD700" }}>персональный приз</span>
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 16 }}>
+              Потри карточку и узнай свой бонус при записи на тур
+            </p>
+          </div>
+
+          <div
+            ref={(el) => register(9)(el as HTMLElement | null)}
+            style={{ opacity: 0, ...(visible[9] ? { animation: "revealUp 0.8s ease-out 0.2s forwards" } : {}) }}
+          >
+            <ScratchCard />
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* ═══ ДОСТОПРИМЕЧАТЕЛЬНОСТИ ═══ */}
+      <section
+        id="attractions"
+        className="py-24 px-4 sm:px-6"
+        style={{ background: "#060d1f" }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div
+            ref={(el) => register(10)(el as HTMLElement | null)}
+            className="text-center mb-16"
+            style={{ opacity: 0, ...(visible[10] ? { animation: "revealUp 0.8s ease-out forwards" } : {}) }}
+          >
+            <div
+              className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest"
+              style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700" }}
+            >
+              ✦ ДОСТОПРИМЕЧАТЕЛЬНОСТИ ОМСКА ✦
+            </div>
+            <h2
+              style={{
+                fontFamily: "Cormorant Garamond, serif",
+                fontSize: "clamp(36px, 6vw, 64px)",
+                fontWeight: 700,
+                color: "#fff",
+                marginBottom: 16,
+              }}
+            >
+              Места, которые{" "}
+              <span style={{ color: "#FFD700" }}>покоряют</span>
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.55)", maxWidth: 560, margin: "0 auto", fontSize: 16 }}>
+              Архитектура, история, природа — Омск умеет удивлять на каждом шагу
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {ATTRACTIONS.map((attr, i) => (
+              <div
+                key={attr.id}
+                ref={(el) => register(11 + i)(el as HTMLElement | null)}
+                className="attr-card rounded-3xl overflow-hidden relative group"
+                style={{
+                  opacity: 0,
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
+                  ...(visible[11 + i]
+                    ? { animation: `revealUp 0.7s ease-out ${(i % 3) * 0.12}s forwards` }
+                    : {}),
+                }}
+              >
+                {/* Изображение */}
+                <div className="relative overflow-hidden" style={{ height: 200 }}>
+                  <img
+                    src={attr.img}
+                    alt={attr.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${attr.id + 10}/600/400`;
+                    }}
+                  />
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background: "linear-gradient(to top, rgba(6,13,31,0.9) 0%, rgba(6,13,31,0.2) 50%, transparent 100%)",
+                    }}
+                  />
+                  {/* Категория */}
+                  <div
+                    className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold"
+                    style={{
+                      background: "rgba(255,215,0,0.15)",
+                      border: "1px solid rgba(255,215,0,0.4)",
+                      color: "#FFD700",
+                      backdropFilter: "blur(8px)",
+                    }}
+                  >
+                    {attr.category}
+                  </div>
+                  {/* Эмодзи */}
+                  <div
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center text-lg"
+                    style={{ background: "rgba(6,13,31,0.7)", backdropFilter: "blur(8px)" }}
+                  >
+                    {attr.emoji}
+                  </div>
+                </div>
+
+                {/* Контент */}
+                <div className="p-5">
+                  <h3
+                    style={{
+                      fontFamily: "Cormorant Garamond, serif",
+                      fontSize: 20,
+                      fontWeight: 700,
+                      color: "#fff",
+                      marginBottom: 8,
+                    }}
+                  >
+                    {attr.name}
+                  </h3>
+                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 1.6 }}>
+                    {attr.desc}
+                  </p>
+                </div>
+
+                {/* Декоративная полоска при hover */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-500 group-hover:opacity-100"
+                  style={{
+                    background: "linear-gradient(90deg, transparent, #FFD700, transparent)",
+                    opacity: 0,
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* ═══ КОНТАКТЫ ═══ */}
+      <section
+        id="contacts"
+        className="py-24 px-4 sm:px-6"
+        style={{
+          background: "linear-gradient(160deg, #060d1f, #0d1b3e)",
+        }}
+      >
+        <div className="max-w-4xl mx-auto">
+          <div
+            ref={(el) => register(20)(el as HTMLElement | null)}
+            className="text-center mb-16"
+            style={{ opacity: 0, ...(visible[20] ? { animation: "revealUp 0.8s ease-out forwards" } : {}) }}
+          >
+            <div
+              className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest"
+              style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700" }}
+            >
+              ✦ СВЯЗАТЬСЯ ✦
+            </div>
+            <h2
+              style={{
+                fontFamily: "Cormorant Garamond, serif",
+                fontSize: "clamp(36px, 6vw, 64px)",
+                fontWeight: 700,
+                color: "#fff",
+                marginBottom: 12,
+              }}
+            >
+              Напишите мне{" "}
+              <span style={{ color: "#FFD700" }}>прямо сейчас</span>
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 16 }}>
+              Отвечаю быстро. Расскажу подробности, подберу лучшую дату, отвечу на все вопросы.
+            </p>
+          </div>
+
+          <div
+            ref={(el) => register(21)(el as HTMLElement | null)}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12"
+            style={{ opacity: 0, ...(visible[21] ? { animation: "revealUp 0.8s ease-out 0.2s forwards" } : {}) }}
+          >
+            {[
+              {
+                icon: "✈️",
+                label: "Telegram",
+                value: "@h7umi",
+                sub: "Быстрый ответ",
+                href: "https://t.me/h7umi",
+                color: "#2AABEE",
+              },
+              {
+                icon: "📱",
+                label: "WhatsApp",
+                value: "+7 (913) 123-45-67",
+                sub: "Голос / текст",
+                href: "https://wa.me/79131234567",
+                color: "#25D366",
+              },
+              {
+                icon: "📞",
+                label: "Телефон",
+                value: "+7 (913) 123-45-67",
+                sub: "Звоните с 9:00 до 21:00",
+                href: "tel:+79131234567",
+                color: "#FFD700",
+              },
+            ].map((c) => (
+              <a
+                key={c.label}
+                href={c.href}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-3xl p-6 text-center flex flex-col items-center gap-3 transition-all hover:scale-105 hover:-translate-y-1"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: `1px solid ${c.color}33`,
+                  boxShadow: `0 4px 24px ${c.color}11`,
+                  textDecoration: "none",
+                }}
+              >
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+                  style={{ background: `${c.color}22`, border: `1px solid ${c.color}44` }}
+                >
+                  {c.icon}
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", marginBottom: 4 }}>
+                    {c.label}
+                  </div>
+                  <div style={{ fontWeight: 700, color: c.color, fontSize: 16 }}>{c.value}</div>
+                  <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>{c.sub}</div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {/* Время работы */}
+          <div
+            ref={(el) => register(22)(el as HTMLElement | null)}
+            className="rounded-3xl p-8 text-center"
+            style={{
+              opacity: 0,
+              background: "rgba(255,215,0,0.05)",
+              border: "1px solid rgba(255,215,0,0.2)",
+              ...(visible[22] ? { animation: "revealUp 0.8s ease-out 0.4s forwards" } : {}),
+            }}
+          >
+            <div className="text-3xl mb-3">🕐</div>
+            <h3
+              style={{
+                fontFamily: "Cormorant Garamond, serif",
+                fontSize: 24,
+                fontWeight: 700,
+                color: "#FFD700",
+                marginBottom: 8,
+              }}
+            >
+              Режим работы
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+              {[
+                { day: "Пн – Пт", time: "09:00 – 21:00" },
+                { day: "Суббота", time: "10:00 – 20:00" },
+                { day: "Воскресенье", time: "11:00 – 18:00" },
+              ].map((wh) => (
+                <div key={wh.day} className="text-center">
+                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13 }}>{wh.day}</div>
+                  <div style={{ color: "#FFD700", fontWeight: 700, fontSize: 18 }}>{wh.time}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ ФУТЕР ═══ */}
+      <footer
+        style={{
+          background: "#030914",
+          borderTop: "1px solid rgba(255,215,0,0.15)",
+          padding: "40px 24px 24px",
+        }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {/* Лого + описание */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
+                  style={{ background: "linear-gradient(135deg, #FFD700, #FFA500)" }}
+                >
+                  🏙️
+                </div>
+                <div>
+                  <div style={{ fontFamily: "Cormorant Garamond, serif", fontSize: 20, fontWeight: 700, color: "#FFD700" }}>
+                    Омск
+                  </div>
+                  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: "0.15em" }}>
+                    INSIDER GUIDE
+                  </div>
+                </div>
+              </div>
+              <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, lineHeight: 1.7 }}>
+                Персональный гид по Омску. Показываю город таким, каким его знают только местные.
+              </p>
+            </div>
+
+            {/* Быстрые ссылки */}
+            <div>
+              <div style={{ fontWeight: 600, color: "#FFD700", marginBottom: 16, fontSize: 13, letterSpacing: "0.1em" }}>
+                РАЗДЕЛЫ
+              </div>
+              <div className="flex flex-col gap-2">
+                {NAV_ITEMS.map((item) =>
+                  item.href.startsWith("/") ? (
+                    <Link
+                      key={item.label}
+                      to={item.href}
+                      style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, textDecoration: "none" }}
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <button
+                      key={item.label}
+                      onClick={() => scrollTo(item.href)}
+                      style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
+                    >
+                      {item.label}
+                    </button>
+                  )
+                )}
+              </div>
+            </div>
+
+            {/* Контакты */}
+            <div>
+              <div style={{ fontWeight: 600, color: "#FFD700", marginBottom: 16, fontSize: 13, letterSpacing: "0.1em" }}>
+                КОНТАКТЫ
+              </div>
+              <div className="flex flex-col gap-3">
+                <a href="https://t.me/h7umi" target="_blank" rel="noreferrer" style={{ color: "#2AABEE", fontSize: 14, textDecoration: "none" }}>
+                  ✈️ Telegram: @h7umi
+                </a>
+                <a href="https://wa.me/79131234567" target="_blank" rel="noreferrer" style={{ color: "#25D366", fontSize: 14, textDecoration: "none" }}>
+                  📱 WhatsApp: +7 (913) 123-45-67
+                </a>
+                <a href="tel:+79131234567" style={{ color: "#FFD700", fontSize: 14, textDecoration: "none" }}>
+                  📞 +7 (913) 123-45-67
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className="pt-6 text-center text-xs"
+            style={{
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+              color: "rgba(255,255,255,0.25)",
+            }}
+          >
+            © 2025 Омск Инсайдер. Все права защищены. Город на слиянии Оми и Иртыша 🌊
           </div>
         </div>
       </footer>
