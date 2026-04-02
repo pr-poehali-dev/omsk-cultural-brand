@@ -24,7 +24,7 @@ const SERVICES_INFO: Record<string, { title: string; icon: string; price: string
 
 const CARD_NUMBER = "2200 7020 7250 7788";
 const BANK_NAME = "Т-Банк (Тинькофф)";
-const RECIPIENT = "Алексей М.";
+const RECIPIENT = "Артём Б.";
 
 export default function Pay() {
   const [searchParams] = useSearchParams();

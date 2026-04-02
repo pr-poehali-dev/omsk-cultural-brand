@@ -98,8 +98,7 @@ const ATTRACTIONS = [
     name: "Серафимо-Алексеевская часовня",
     desc: "Жемчужина Омска — изящная часовня начала XX века. Восстановленная в 1990-х, она стала символом возрождения духовной жизни города.",
     emoji: "⛪",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Omsk_Serafimо_chapel.jpg/800px-Omsk_Serafimo_chapel.jpg",
-    imgFallback: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Serafimо-Alekseyevskaya_Chapel%2C_Omsk%2C_Russia.jpg/800px-Serafimo-Alekseyevskaya_Chapel%2C_Omsk%2C_Russia.jpg",
+    img: "https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/d1c0c1b4-2236-4f6f-832f-65405d4e567b.jpg",
     category: "Архитектура",
   },
   {
@@ -107,8 +106,7 @@ const ATTRACTIONS = [
     name: "Успенский собор",
     desc: "Величественный Успенский кафедральный собор на Соборной площади — духовный центр Омска и один из красивейших храмов Сибири.",
     emoji: "🕍",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Assumption_Cathedral%2C_Omsk%2C_Russia_-_panoramio.jpg/800px-Assumption_Cathedral%2C_Omsk%2C_Russia_-_panoramio.jpg",
-    imgFallback: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Uspenski_sobor_Omsk.jpg/800px-Uspenski_sobor_Omsk.jpg",
+    img: "https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/4259c50f-0e3c-4363-a969-bf55e352ff45.jpg",
     category: "Архитектура",
   },
   {
@@ -116,8 +114,7 @@ const ATTRACTIONS = [
     name: "G-Drive Арена",
     desc: "Современная домашняя арена легендарного ХК «Авангард». Хоккейные матчи здесь — это настоящий праздник и оглушительная атмосфера.",
     emoji: "🏒",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/G-Drive_Arena_Omsk_exterior.jpg/800px-G-Drive_Arena_Omsk_exterior.jpg",
-    imgFallback: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Avangard_Arena_Omsk.jpg/800px-Avangard_Arena_Omsk.jpg",
+    img: "https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/ceb68fb5-b64b-430c-b895-3f368472eb97.jpg",
     category: "Спорт",
   },
   {
@@ -125,8 +122,7 @@ const ATTRACTIONS = [
     name: "Любинский проспект",
     desc: "Главный бульвар Омска с историческими зданиями XIX–XX веков. Прогулка по нему — это путешествие сквозь эпохи и архитектурные стили.",
     emoji: "🌆",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Lyubinsky_Prospect%2C_Omsk.jpg/800px-Lyubinsky_Prospect%2C_Omsk.jpg",
-    imgFallback: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Omsk_Lubinsk_prospect.jpg/800px-Omsk_Lubinsk_prospect.jpg",
+    img: "https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/27c70e53-1a67-4b52-b4ae-c3f71d23dbb3.jpg",
     category: "Архитектура",
   },
   {
@@ -134,8 +130,7 @@ const ATTRACTIONS = [
     name: "Музей Достоевского",
     desc: "Ф. М. Достоевский провёл в Омске 4 года на каторге. Музей хранит уникальные артефакты и документы об этом периоде жизни великого писателя.",
     emoji: "📚",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Omsk_Dostoevsky_Museum.jpg/800px-Omsk_Dostoevsky_Museum.jpg",
-    imgFallback: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Dostoevsky_Literary_Museum_Omsk.jpg/800px-Dostoevsky_Literary_Museum_Omsk.jpg",
+    img: "https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/98f99f09-a112-4030-90e2-16a41158de6a.jpg",
     category: "Культура",
   },
 ];
@@ -216,60 +211,69 @@ function ScratchCard() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Фон скретч-слоя в стиле Омска — тёмно-синий с золотом
+    // Стиль G-Drive Arena — тёмный с оранжево-красными акцентами
     const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    grad.addColorStop(0, "#0d1b3e");
-    grad.addColorStop(0.4, "#1a2a5e");
-    grad.addColorStop(0.7, "#0a1628");
-    grad.addColorStop(1, "#1a0a2e");
+    grad.addColorStop(0, "#0a0a0a");
+    grad.addColorStop(0.4, "#1a0800");
+    grad.addColorStop(0.7, "#0f0f0f");
+    grad.addColorStop(1, "#1a0500");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Орнамент — золотые звёзды (символ Сибири)
-    for (let i = 0; i < 40; i++) {
-      ctx.fillStyle = `rgba(255,215,0,${0.05 + Math.random() * 0.2})`;
+    // Эффект LED-подсветки арены (красно-оранжевые полосы)
+    for (let i = 0; i < 8; i++) {
+      const y = (canvas.height / 8) * i;
+      const grd = ctx.createLinearGradient(0, y, canvas.width, y);
+      grd.addColorStop(0, "rgba(255,60,0,0)");
+      grd.addColorStop(0.5, `rgba(255,${80 + i * 10},0,0.06)`);
+      grd.addColorStop(1, "rgba(255,60,0,0)");
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, y, canvas.width, 3);
+    }
+
+    // Мерцающие огни как на арене
+    for (let i = 0; i < 35; i++) {
+      ctx.fillStyle = `rgba(255,${120 + Math.random() * 80},0,${0.1 + Math.random() * 0.25})`;
       ctx.beginPath();
       ctx.arc(
         Math.random() * canvas.width,
         Math.random() * canvas.height,
-        Math.random() * 2.5 + 0.5,
+        Math.random() * 2 + 0.5,
         0,
         Math.PI * 2
       );
       ctx.fill();
     }
 
-    // Декоративная рамка
-    ctx.strokeStyle = "rgba(255,215,0,0.4)";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
+    // Рамка в стиле G-Drive (красно-оранжевая)
+    const borderGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    borderGrad.addColorStop(0, "rgba(255,80,0,0.7)");
+    borderGrad.addColorStop(0.5, "rgba(255,140,0,0.9)");
+    borderGrad.addColorStop(1, "rgba(255,80,0,0.7)");
+    ctx.strokeStyle = borderGrad;
+    ctx.lineWidth = 3;
+    ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
 
-    // Верхний текст — «ОМСК ПОД ЗАЩИТОЙ»
-    ctx.fillStyle = "rgba(255,215,0,0.95)";
-    ctx.font = "bold 13px Montserrat, sans-serif";
+    // G-DRIVE логотип текст
+    ctx.fillStyle = "rgba(255,140,0,0.95)";
+    ctx.font = "bold 14px Montserrat, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("★ ОМСК ПОД ЗАЩИТОЙ ★", canvas.width / 2, 36);
+    ctx.fillText("G·DRIVE АРЕНА", canvas.width / 2, 32);
 
-    // Разделитель
-    ctx.strokeStyle = "rgba(255,215,0,0.3)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(24, 48);
-    ctx.lineTo(canvas.width - 24, 48);
-    ctx.stroke();
+    // Птица (ястреб «Авангарда»)
+    ctx.fillStyle = "rgba(255,100,0,0.25)";
+    ctx.font = "bold 32px serif";
+    ctx.fillText("🦅", canvas.width / 2, canvas.height / 2 - 8);
 
-    // Основной текст
-    ctx.fillStyle = "rgba(255,215,0,0.9)";
-    ctx.font = "bold 15px Montserrat, sans-serif";
-    ctx.fillText("🏙️ Потри карточку!", canvas.width / 2, canvas.height / 2 - 12);
-    ctx.font = "12px Montserrat, sans-serif";
-    ctx.fillStyle = "rgba(255,255,255,0.65)";
-    ctx.fillText("Твой бонус при записи на тур", canvas.width / 2, canvas.height / 2 + 14);
+    // Текст потереть
+    ctx.fillStyle = "rgba(255,140,0,0.9)";
+    ctx.font = "bold 14px Montserrat, sans-serif";
+    ctx.fillText("Потри и узнай свой приз!", canvas.width / 2, canvas.height / 2 + 28);
 
-    // Нижний текст
-    ctx.fillStyle = "rgba(255,215,0,0.6)";
-    ctx.font = "11px Montserrat, sans-serif";
-    ctx.fillText("Здесь начинается Сибирь", canvas.width / 2, canvas.height - 16);
+    // Нижний слоган
+    ctx.fillStyle = "rgba(255,100,0,0.6)";
+    ctx.font = "10px Montserrat, sans-serif";
+    ctx.fillText("ОМСК — ЗДЕСЬ НАЧИНАЕТСЯ СИБИРЬ", canvas.width / 2, canvas.height - 14);
   }, [cardKey]);
 
   const getPos = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement) => {
@@ -399,9 +403,9 @@ function ScratchCard() {
 /* ──────────── НАВИГАЦИЯ ──────────── */
 const NAV_ITEMS = [
   { label: "Главная", href: "#hero" },
+  { label: "О проекте", href: "#about-project" },
   { label: "Услуги", href: "#services" },
-  { label: "Омск", href: "#omsk" },
-  { label: "Интерактив", href: "#scratch" },
+  { label: "Карта", href: "#map" },
   { label: "Алфавит", href: "/alphabet" },
   { label: "Контакты", href: "#contacts" },
 ];
@@ -442,6 +446,494 @@ function FallingWords() {
           {item.word}
         </div>
       ))}
+    </div>
+  );
+}
+
+/* ──────────── КАРТА ОМСКА ──────────── */
+const MAP_POINTS = [
+  {
+    id: 1, name: "Омская крепость", emoji: "🏰", x: 52, y: 62,
+    desc: "Основана в 1716 году — место рождения города. Тобольские ворота, бастионы, острог Достоевского.",
+    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.3666,54.9907&z=17&text=Омская+крепость",
+    google: "https://maps.google.com/?q=54.9907,73.3666",
+  },
+  {
+    id: 2, name: "Набережная Иртыша", emoji: "🌊", x: 44, y: 70,
+    desc: "Живописная набережная вдоль Иртыша — главная прогулочная зона города.",
+    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.3560,54.9820&z=16&text=Набережная+Иртыша",
+    google: "https://maps.google.com/?q=54.9820,73.3560",
+  },
+  {
+    id: 3, name: "Театр драмы", emoji: "🎭", x: 50, y: 46,
+    desc: "Один из старейших театров Сибири (1874 г.) — жемчужина классической архитектуры.",
+    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.3690,55.0000&z=17&text=Омский+театр+драмы",
+    google: "https://maps.google.com/?q=55.0000,73.3690",
+  },
+  {
+    id: 4, name: "Музей Врубеля", emoji: "🎨", x: 47, y: 52,
+    desc: "Крупнейший художественный музей Сибири — 30 000+ экспонатов, работы Врубеля.",
+    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.3670,54.9950&z=17&text=Музей+Врубеля+Омск",
+    google: "https://maps.google.com/?q=54.9950,73.3670",
+  },
+  {
+    id: 5, name: "Серафимо-Алексеевская часовня", emoji: "⛪", x: 54, y: 44,
+    desc: "Изящная часовня XIX века — символ духовного возрождения Омска.",
+    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.3695,55.0012&z=17&text=Серафимо-Алексеевская+часовня",
+    google: "https://maps.google.com/?q=55.0012,73.3695",
+  },
+  {
+    id: 6, name: "Успенский собор", emoji: "🕍", x: 57, y: 38,
+    desc: "Величественный кафедральный собор — духовный центр Омска, восстановлен в 2007 году.",
+    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.3700,55.0062&z=17&text=Успенский+собор+Омск",
+    google: "https://maps.google.com/?q=55.0062,73.3700",
+  },
+  {
+    id: 7, name: "G-Drive Арена", emoji: "🏒", x: 64, y: 28,
+    desc: "Современный домашний стадион ХК «Авангард» — сибирский хоккейный храм.",
+    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.3810,55.0140&z=16&text=G-Drive+Арена+Омск",
+    google: "https://maps.google.com/?q=55.0140,73.3810",
+  },
+  {
+    id: 8, name: "Любинский проспект", emoji: "🌆", x: 48, y: 56,
+    desc: "«Омский Арбат» — главная пешеходная улица с фасадами XIX–XX веков.",
+    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.3680,54.9920&z=17&text=Любинский+проспект+Омск",
+    google: "https://maps.google.com/?q=54.9920,73.3680",
+  },
+  {
+    id: 9, name: "Музей Достоевского", emoji: "📚", x: 55, y: 58,
+    desc: "Здесь великий писатель провёл 4 года каторги, ставшие источником «Записок из Мёртвого дома».",
+    yandex: "https://yandex.ru/maps/66/omsk/?ll=73.3720,54.9900&z=17&text=Музей+Достоевского+Омск",
+    google: "https://maps.google.com/?q=54.9900,73.3720",
+  },
+];
+
+function OmskInteractiveMap() {
+  const [active, setActive] = useState<number | null>(null);
+  const activePoint = MAP_POINTS.find((p) => p.id === active);
+
+  return (
+    <div>
+      <div
+        className="relative w-full rounded-3xl overflow-hidden"
+        style={{
+          height: "clamp(400px, 60vw, 680px)",
+          boxShadow: "0 0 60px rgba(255,215,0,0.15), 0 20px 60px rgba(0,0,0,0.6)",
+          border: "2px solid rgba(255,215,0,0.2)",
+        }}
+        onClick={() => setActive(null)}
+      >
+        {/* OpenStreetMap iframe */}
+        <iframe
+          title="Карта Омска"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=73.28%2C54.94%2C73.47%2C55.06&layer=mapnik"
+          className="w-full h-full"
+          style={{
+            border: "none",
+            filter: "hue-rotate(200deg) saturate(0.65) brightness(0.75)",
+          }}
+          loading="lazy"
+        />
+        {/* Тёмный оверлей */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "linear-gradient(135deg, rgba(6,13,31,0.3) 0%, transparent 50%, rgba(6,13,31,0.3) 100%)" }}
+        />
+        {/* Маркеры */}
+        {MAP_POINTS.map((pt) => (
+          <button
+            key={pt.id}
+            onClick={(e) => { e.stopPropagation(); setActive(active === pt.id ? null : pt.id); }}
+            className="absolute transition-all duration-200"
+            style={{
+              left: `${pt.x}%`,
+              top: `${pt.y}%`,
+              transform: "translate(-50%, -50%)",
+              zIndex: active === pt.id ? 20 : 10,
+            }}
+          >
+            <div
+              className="relative flex flex-col items-center"
+            >
+              {/* Пульсация при активном */}
+              {active === pt.id && (
+                <span
+                  className="absolute rounded-full"
+                  style={{
+                    width: 44, height: 44,
+                    top: -4, left: -4,
+                    background: "rgba(255,215,0,0.25)",
+                    animation: "ripple 1.5s ease-out infinite",
+                  }}
+                />
+              )}
+              <div
+                className="flex items-center justify-center rounded-full text-lg font-bold shadow-lg transition-all duration-200"
+                style={{
+                  width: active === pt.id ? 42 : 36,
+                  height: active === pt.id ? 42 : 36,
+                  background: active === pt.id
+                    ? "linear-gradient(135deg, #FFD700, #FFA500)"
+                    : "rgba(6,13,31,0.9)",
+                  border: `2px solid ${active === pt.id ? "#FFD700" : "rgba(255,215,0,0.6)"}`,
+                  boxShadow: active === pt.id
+                    ? "0 0 20px rgba(255,215,0,0.6)"
+                    : "0 2px 10px rgba(0,0,0,0.5)",
+                }}
+              >
+                {pt.emoji}
+              </div>
+              {/* Подпись */}
+              <div
+                className="mt-1 px-2 py-0.5 rounded text-center"
+                style={{
+                  background: "rgba(6,13,31,0.85)",
+                  color: active === pt.id ? "#FFD700" : "rgba(255,255,255,0.8)",
+                  fontSize: "clamp(9px, 1.2vw, 12px)",
+                  fontWeight: active === pt.id ? 700 : 400,
+                  whiteSpace: "nowrap",
+                  maxWidth: "120px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  backdropFilter: "blur(4px)",
+                  border: active === pt.id ? "1px solid rgba(255,215,0,0.4)" : "1px solid rgba(255,255,255,0.1)",
+                }}
+              >
+                {pt.name}
+              </div>
+            </div>
+          </button>
+        ))}
+        {/* Попап с описанием */}
+        {activePoint && (
+          <div
+            className="absolute z-30 rounded-2xl p-4"
+            style={{
+              bottom: 20, left: "50%", transform: "translateX(-50%)",
+              width: "clamp(280px, 80%, 420px)",
+              background: "rgba(6,13,31,0.97)",
+              border: "1px solid rgba(255,215,0,0.4)",
+              backdropFilter: "blur(20px)",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.7), 0 0 20px rgba(255,215,0,0.1)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start gap-3 mb-3">
+              <span style={{ fontSize: 28 }}>{activePoint.emoji}</span>
+              <div className="flex-1 min-w-0">
+                <div style={{ fontFamily: "Cormorant Garamond, serif", fontSize: 18, fontWeight: 700, color: "#FFD700", lineHeight: 1.2 }}>
+                  {activePoint.name}
+                </div>
+                <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 1.5, marginTop: 4 }}>
+                  {activePoint.desc}
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <a
+                href={activePoint.yandex}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 text-center py-2 rounded-xl text-sm font-semibold transition-all hover:scale-105"
+                style={{ background: "linear-gradient(135deg, #FC3F1D, #FF6534)", color: "#fff", textDecoration: "none" }}
+              >
+                🗺 Яндекс
+              </a>
+              <a
+                href={activePoint.google}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 text-center py-2 rounded-xl text-sm font-semibold transition-all hover:scale-105"
+                style={{ background: "linear-gradient(135deg, #4285F4, #34A853)", color: "#fff", textDecoration: "none" }}
+              >
+                🌐 Google
+              </a>
+              <button
+                onClick={() => setActive(null)}
+                className="w-10 flex items-center justify-center rounded-xl text-sm transition-all hover:scale-105"
+                style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.6)", border: "1px solid rgba(255,255,255,0.12)" }}
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+      {/* Легенда */}
+      <div className="flex flex-wrap gap-2 justify-center mt-5">
+        {MAP_POINTS.map((pt) => (
+          <button
+            key={pt.id}
+            onClick={() => setActive(active === pt.id ? null : pt.id)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all hover:scale-105"
+            style={{
+              background: active === pt.id ? "rgba(255,215,0,0.2)" : "rgba(255,255,255,0.05)",
+              border: `1px solid ${active === pt.id ? "rgba(255,215,0,0.5)" : "rgba(255,255,255,0.1)"}`,
+              color: active === pt.id ? "#FFD700" : "rgba(255,255,255,0.6)",
+            }}
+          >
+            <span>{pt.emoji}</span>
+            <span>{pt.name}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ──────────── ОМСК-ТЕСТ (КРЕАТИВНЫЙ БЛОК) ──────────── */
+const QUIZ_QUESTIONS = [
+  {
+    question: "Сколько лет провёл Достоевский в Омске?",
+    options: ["2 года", "4 года", "7 лет", "Он тут не был"],
+    correct: 1,
+    fact: "Достоевский провёл в Омском остроге 4 года (1850–1854). Именно здесь он «умер» и «воскрес» как гений.",
+  },
+  {
+    question: "Как называется главная пешеходная улица Омска?",
+    options: ["Арбат", "Любинский проспект", "Невский проспект", "Сибирская аллея"],
+    correct: 1,
+    fact: "Любинский проспект — «Омский Арбат», назван в честь Любови Гасфорд, жены генерал-губернатора.",
+  },
+  {
+    question: "Какой хоккейный клуб базируется в Омске?",
+    options: ["Металлург", "Авангард", "Сибирь", "Иртыш"],
+    correct: 1,
+    fact: "ХК «Авангард» — гордость Омска, многократный чемпион КХЛ. Их логотип — ястреб в атаке.",
+  },
+  {
+    question: "Сколько экспонатов в Музее Врубеля?",
+    options: ["500+", "5 000+", "30 000+", "1 000 000"],
+    correct: 2,
+    fact: "Музей им. Врубеля хранит более 30 000 экспонатов — крупнейшая коллекция за Уралом!",
+  },
+  {
+    question: "В каком году основана Омская крепость?",
+    options: ["1616", "1716", "1816", "1916"],
+    correct: 1,
+    fact: "Омская крепость основана в 1716 году — ровно 308 лет назад! Именно отсюда началось завоевание Сибири.",
+  },
+];
+
+function OmskQuiz() {
+  const [step, setStep] = useState<"intro" | "quiz" | "result">("intro");
+  const [current, setCurrent] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [showFact, setShowFact] = useState(false);
+
+  const q = QUIZ_QUESTIONS[current];
+
+  const handleAnswer = (idx: number) => {
+    if (selected !== null) return;
+    setSelected(idx);
+    setShowFact(true);
+    if (idx === q.correct) setScore((s) => s + 1);
+  };
+
+  const handleNext = () => {
+    setSelected(null);
+    setShowFact(false);
+    if (current + 1 >= QUIZ_QUESTIONS.length) {
+      setStep("result");
+    } else {
+      setCurrent((c) => c + 1);
+    }
+  };
+
+  const getResultTitle = () => {
+    if (score === 5) return { title: "🏆 Ты — настоящий омич!", sub: "Можешь сам водить экскурсии!", color: "#FFD700" };
+    if (score >= 3) return { title: "🎉 Почти местный!", sub: "Омск тебя ждёт — всё остальное узнаешь на месте", color: "#4ADE80" };
+    if (score >= 1) return { title: "🌍 Начинающий путешественник", sub: "Пора планировать поездку в Омск!", color: "#60A5FA" };
+    return { title: "😅 Хм... ты точно слышал про Сибирь?", sub: "Не переживай — мы тебя просветим!", color: "#F97316" };
+  };
+
+  if (step === "intro") {
+    return (
+      <div
+        className="rounded-3xl p-8 md:p-12 text-center"
+        style={{
+          background: "linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,255,255,0.03))",
+          border: "1px solid rgba(255,215,0,0.25)",
+        }}
+      >
+        <div style={{ fontSize: 56, marginBottom: 16 }}>🤔</div>
+        <h2
+          style={{
+            fontFamily: "Cormorant Garamond, serif",
+            fontSize: "clamp(28px, 5vw, 48px)",
+            fontWeight: 700,
+            color: "#fff",
+            marginBottom: 12,
+          }}
+        >
+          Насколько ты знаешь <span style={{ color: "#FFD700" }}>Омск?</span>
+        </h2>
+        <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 16, maxWidth: 480, margin: "0 auto 28px", lineHeight: 1.7 }}>
+          5 вопросов. Смешные факты. Узнай, готов ли ты к путешествию в сердце Сибири —
+          или тебе ещё есть что открыть!
+        </p>
+        <button
+          onClick={() => setStep("quiz")}
+          className="px-8 py-4 rounded-full font-bold text-base transition-all hover:scale-105"
+          style={{
+            background: "linear-gradient(135deg, #FFD700, #FFA500)",
+            color: "#0a0a0a",
+            boxShadow: "0 8px 30px rgba(255,165,0,0.4)",
+          }}
+        >
+          🎯 Начать тест!
+        </button>
+      </div>
+    );
+  }
+
+  if (step === "result") {
+    const res = getResultTitle();
+    return (
+      <div
+        className="rounded-3xl p-8 md:p-12 text-center"
+        style={{
+          background: "linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,255,255,0.03))",
+          border: "1px solid rgba(255,215,0,0.25)",
+        }}
+      >
+        <div style={{ fontSize: 56, marginBottom: 16 }}>🏁</div>
+        <h2
+          style={{
+            fontFamily: "Cormorant Garamond, serif",
+            fontSize: "clamp(24px, 4vw, 40px)",
+            fontWeight: 700,
+            color: res.color,
+            marginBottom: 8,
+          }}
+        >
+          {res.title}
+        </h2>
+        <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 16, marginBottom: 20 }}>{res.sub}</p>
+        <div
+          className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl mb-8"
+          style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+        >
+          <span style={{ fontFamily: "Cormorant Garamond, serif", fontSize: 40, fontWeight: 700, color: res.color }}>
+            {score}/{QUIZ_QUESTIONS.length}
+          </span>
+          <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 14 }}>правильных ответов</div>
+        </div>
+        <div className="flex flex-wrap gap-3 justify-center">
+          <button
+            onClick={() => { setStep("intro"); setCurrent(0); setScore(0); setSelected(null); setShowFact(false); }}
+            className="px-6 py-3 rounded-full font-semibold text-sm transition-all hover:scale-105"
+            style={{ background: "rgba(255,215,0,0.12)", border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700" }}
+          >
+            🔄 Пройти снова
+          </button>
+          <Link
+            to="/alphabet"
+            className="px-6 py-3 rounded-full font-bold text-sm transition-all hover:scale-105"
+            style={{ background: "linear-gradient(135deg, #FFD700, #FFA500)", color: "#0a0a0a", textDecoration: "none" }}
+          >
+            🔤 Омский Алфавит →
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="rounded-3xl p-6 md:p-10"
+      style={{
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,215,0,0.2)",
+      }}
+    >
+      {/* Прогресс */}
+      <div className="flex items-center justify-between mb-6">
+        <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 13 }}>
+          Вопрос {current + 1} из {QUIZ_QUESTIONS.length}
+        </div>
+        <div className="flex gap-1.5">
+          {QUIZ_QUESTIONS.map((_, i) => (
+            <div
+              key={i}
+              className="h-1.5 rounded-full transition-all duration-300"
+              style={{
+                width: i === current ? 32 : 12,
+                background: i < current ? "#FFD700" : i === current ? "#FFD700" : "rgba(255,255,255,0.15)",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Вопрос */}
+      <h3
+        style={{
+          fontFamily: "Cormorant Garamond, serif",
+          fontSize: "clamp(20px, 3.5vw, 32px)",
+          fontWeight: 700,
+          color: "#fff",
+          marginBottom: 24,
+          lineHeight: 1.3,
+        }}
+      >
+        {q.question}
+      </h3>
+
+      {/* Варианты */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+        {q.options.map((opt, idx) => {
+          let bg = "rgba(255,255,255,0.05)";
+          let border = "rgba(255,255,255,0.1)";
+          let color = "rgba(255,255,255,0.8)";
+          if (selected !== null) {
+            if (idx === q.correct) { bg = "rgba(74,222,128,0.15)"; border = "#4ADE80"; color = "#4ADE80"; }
+            else if (idx === selected && idx !== q.correct) { bg = "rgba(248,113,113,0.15)"; border = "#F87171"; color = "#F87171"; }
+          }
+          return (
+            <button
+              key={idx}
+              onClick={() => handleAnswer(idx)}
+              disabled={selected !== null}
+              className="text-left px-5 py-4 rounded-2xl font-medium text-sm transition-all"
+              style={{
+                background: bg,
+                border: `2px solid ${border}`,
+                color,
+                cursor: selected !== null ? "default" : "pointer",
+              }}
+            >
+              {idx === 0 ? "А" : idx === 1 ? "Б" : idx === 2 ? "В" : "Г"}. {opt}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Факт после ответа */}
+      {showFact && (
+        <div
+          className="rounded-2xl p-4 mb-4"
+          style={{ background: "rgba(255,215,0,0.08)", border: "1px solid rgba(255,215,0,0.2)" }}
+        >
+          <div style={{ color: "#FFD700", fontWeight: 700, fontSize: 13, marginBottom: 6 }}>💡 Интересный факт:</div>
+          <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.6 }}>{q.fact}</div>
+        </div>
+      )}
+
+      {selected !== null && (
+        <button
+          onClick={handleNext}
+          className="w-full py-4 rounded-2xl font-bold text-base transition-all hover:scale-105"
+          style={{
+            background: "linear-gradient(135deg, #FFD700, #FFA500)",
+            color: "#0a0a0a",
+            boxShadow: "0 4px 20px rgba(255,165,0,0.3)",
+          }}
+        >
+          {current + 1 >= QUIZ_QUESTIONS.length ? "Посмотреть результат 🏁" : "Следующий вопрос →"}
+        </button>
+      )}
     </div>
   );
 }
@@ -706,6 +1198,265 @@ export default function Index() {
           }}
         />
       </div>
+
+      {/* ═══ ТЕКСТ ПОД БАННЕРОМ ═══ */}
+      <div
+        style={{
+          background: "linear-gradient(180deg, #060d1f 0%, #0a1220 100%)",
+          borderBottom: "1px solid rgba(255,215,0,0.15)",
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
+          {/* Манифест */}
+          <div className="text-center mb-10">
+            <p
+              style={{
+                fontFamily: "Cormorant Garamond, serif",
+                fontSize: "clamp(18px, 3vw, 28px)",
+                color: "rgba(255,255,255,0.9)",
+                lineHeight: 1.8,
+                fontStyle: "italic",
+                maxWidth: 820,
+                margin: "0 auto",
+              }}
+            >
+              «Главный визуальный баннер кампании — это не просто реклама.{" "}
+              <span style={{ color: "#FFD700", fontStyle: "normal", fontWeight: 700 }}>Это манифест.</span>{" "}
+              Образ, который меняет представление о Сибири: строгой, холодной, далёкой.
+              Омск — тёплый, культурный, живой.»
+            </p>
+          </div>
+          {/* Теги-пилюли */}
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              { icon: "🏛️", label: "Культура" },
+              { icon: "🗺️", label: "Туризм" },
+              { icon: "📜", label: "История" },
+              { icon: "🍽️", label: "Гастрономия" },
+            ].map((tag) => (
+              <div
+                key={tag.label}
+                className="flex items-center gap-2 px-6 py-3 rounded-full"
+                style={{
+                  background: "rgba(255,215,0,0.08)",
+                  border: "1px solid rgba(255,215,0,0.3)",
+                  color: "#FFD700",
+                  fontSize: 15,
+                  fontWeight: 600,
+                  letterSpacing: "0.08em",
+                }}
+              >
+                <span>{tag.icon}</span>
+                <span>{tag.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ О ПРОЕКТЕ ═══ */}
+      <section
+        id="about-project"
+        className="py-24 px-4 sm:px-6"
+        style={{ background: "linear-gradient(180deg, #0a1220, #060d1f)" }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <div
+              className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest"
+              style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700" }}
+            >
+              ✦ О НАШЕМ ПРОЕКТЕ ✦
+            </div>
+            <h2
+              style={{
+                fontFamily: "Cormorant Garamond, serif",
+                fontSize: "clamp(32px, 5vw, 60px)",
+                fontWeight: 700,
+                color: "#fff",
+                marginBottom: 12,
+              }}
+            >
+              Омск — <span style={{ color: "#FFD700" }}>больше, чем думают</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            {/* Герб */}
+            <div
+              className="rounded-3xl p-8 text-center flex flex-col items-center gap-4"
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,215,0,0.2)",
+                gridColumn: "1",
+              }}
+            >
+              {/* Герб Омска SVG */}
+              <div
+                className="w-28 h-28 rounded-full flex items-center justify-center text-5xl"
+                style={{
+                  background: "linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05))",
+                  border: "2px solid rgba(255,215,0,0.4)",
+                  boxShadow: "0 0 30px rgba(255,215,0,0.15)",
+                }}
+              >
+                🦅
+              </div>
+              <h3
+                style={{
+                  fontFamily: "Cormorant Garamond, serif",
+                  fontSize: 22,
+                  fontWeight: 700,
+                  color: "#FFD700",
+                }}
+              >
+                Герб Омска
+              </h3>
+              <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, lineHeight: 1.7 }}>
+                На гербе Омска изображён золотой кадуцей (символ торговли и процветания) на фоне
+                Омской крепости. С 2002 года — современный герб с синим щитом и золотым конём,
+                олицетворяющим свободу, скорость и природную мощь Сибири.
+              </p>
+              <div
+                className="px-3 py-1 rounded-full text-xs font-semibold"
+                style={{ background: "rgba(255,215,0,0.12)", color: "#FFD700", border: "1px solid rgba(255,215,0,0.3)" }}
+              >
+                Утверждён в 2002 году
+              </div>
+            </div>
+
+            {/* О городе */}
+            <div
+              className="rounded-3xl p-8"
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,215,0,0.2)",
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: "Cormorant Garamond, serif",
+                  fontSize: 22,
+                  fontWeight: 700,
+                  color: "#FFD700",
+                  marginBottom: 16,
+                }}
+              >
+                Омск — ворота в Сибирь
+              </h3>
+              <div className="space-y-4">
+                {[
+                  { icon: "📍", title: "Основан в 1716 году", text: "Как военная крепость на слиянии рек Оми и Иртыша. Почти 300 лет истории." },
+                  { icon: "👥", title: "1,1 млн жителей", text: "Второй по величине город Сибири. Крупнейший культурный центр за Уралом." },
+                  { icon: "🏛️", title: "Культурная столица", text: "120+ музеев, театров и галерей. Более 250 памятников истории и культуры." },
+                  { icon: "📚", title: "Достоевский и Омск", text: "1850–1854 гг. — Фёдор Достоевский на каторге. Именно здесь он написал «Записки из Мёртвого дома»." },
+                  { icon: "🏒", title: "Спортивная гордость", text: "ХК «Авангард» — один из символов города. Омский хоккей известен по всей России." },
+                ].map((item) => (
+                  <div key={item.title} className="flex gap-3">
+                    <span style={{ fontSize: 18, flexShrink: 0 }}>{item.icon}</span>
+                    <div>
+                      <div style={{ color: "#FFD700", fontWeight: 600, fontSize: 13, marginBottom: 2 }}>{item.title}</div>
+                      <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 1.5 }}>{item.text}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* О сайте */}
+            <div
+              className="rounded-3xl p-8"
+              style={{
+                background: "linear-gradient(160deg, rgba(255,215,0,0.08), rgba(255,255,255,0.03))",
+                border: "1px solid rgba(255,215,0,0.25)",
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: "Cormorant Garamond, serif",
+                  fontSize: 22,
+                  fontWeight: 700,
+                  color: "#FFD700",
+                  marginBottom: 16,
+                }}
+              >
+                О нашем проекте
+              </h3>
+              <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.8, marginBottom: 16 }}>
+                Мы — команда <strong style={{ color: "#FFD700" }}>«Омск под защитой»</strong>, резиденты
+                региональной профильной смены «Сириус-55». В рамках проектной деятельности мы
+                разрабатываем рекламную кампанию для продвижения Омска как культурной столицы России.
+              </p>
+              <div className="space-y-3 mb-6">
+                {[
+                  "🎯 Создание единого бренда города",
+                  "📱 Цифровое продвижение туризма",
+                  "🗺️ Авторские туристические маршруты",
+                  "📊 Системный PR в федеральных СМИ",
+                  "🎨 Визуальная культурная идентичность",
+                ].map((item) => (
+                  <div key={item} style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, display: "flex", alignItems: "center", gap: 8 }}>
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div
+                className="rounded-2xl p-4 text-center"
+                style={{ background: "rgba(255,215,0,0.08)", border: "1px solid rgba(255,215,0,0.2)" }}
+              >
+                <div style={{ color: "#FFD700", fontSize: 13, fontWeight: 600 }}>🛡️ ОМСК ПОД ЗАЩИТОЙ</div>
+                <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 4 }}>Сириус-55 · Проектная деятельность · 2025</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* ═══ КАРТА ОМСКА ═══ */}
+      <section id="map" className="py-24 px-4 sm:px-6" style={{ background: "#060d1f" }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <div
+              className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest"
+              style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700" }}
+            >
+              ✦ ИНТЕРАКТИВНАЯ КАРТА ✦
+            </div>
+            <h2
+              style={{
+                fontFamily: "Cormorant Garamond, serif",
+                fontSize: "clamp(32px, 5vw, 60px)",
+                fontWeight: 700,
+                color: "#fff",
+                marginBottom: 12,
+              }}
+            >
+              Туристические <span style={{ color: "#FFD700" }}>точки Омска</span>
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 16, maxWidth: 560, margin: "0 auto" }}>
+              Нажмите на маркер — узнайте о месте и постройте маршрут прямо с карты
+            </p>
+          </div>
+          <OmskInteractiveMap />
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* ═══ КРЕАТИВНЫЙ БЛОК — ОМСК-ТЕСТ ═══ */}
+      <section
+        id="fun"
+        className="py-20 px-4 sm:px-6 overflow-hidden"
+        style={{ background: "linear-gradient(180deg, #060d1f, #0a1628)" }}
+      >
+        <div className="max-w-4xl mx-auto">
+          <OmskQuiz />
+        </div>
+      </section>
+
+      <div className="section-divider" />
 
       {/* ═══ HERO ═══ */}
       <section
