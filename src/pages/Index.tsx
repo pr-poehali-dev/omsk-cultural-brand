@@ -66,7 +66,7 @@ const ATTRACTIONS = [
     name: "Омская крепость",
     desc: "Историческая крепость XVIII века — место основания Омска. Восстановленные бастионы и Тобольские ворота перенесут вас в эпоху освоения Сибири.",
     emoji: "🏰",
-    img: "https://images.unsplash.com/photo-1563885572793-a5b8e9b3a9e4?w=600&q=80",
+    img: "https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/98f0c1c1-18e6-411e-8d70-5f7e51e96772.jpg",
     category: "История",
   },
   {
@@ -74,7 +74,7 @@ const ATTRACTIONS = [
     name: "Набережная Иртыша",
     desc: "Живописная набережная великой реки — любимое место отдыха омичей. Закаты здесь превращаются в настоящие картины импрессионистов.",
     emoji: "🌊",
-    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
+    img: "https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/7e74a178-1439-4c61-b0b5-8da7db98d419.jpg",
     category: "Природа",
   },
   {
@@ -82,7 +82,7 @@ const ATTRACTIONS = [
     name: "Театр драмы",
     desc: "Один из старейших театров Сибири (1874 г.). Величественное здание в стиле классицизма и богатый репертуар — от классики до авангарда.",
     emoji: "🎭",
-    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",
+    img: "https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/059bdfa4-3c7f-40ce-9c70-9b3551dee6bd.jpg",
     category: "Культура",
   },
   {
@@ -90,7 +90,7 @@ const ATTRACTIONS = [
     name: "Музей им. Врубеля",
     desc: "Крупнейший художественный музей Сибири с коллекцией более 30 000 экспонатов. Гордость — оригинальные работы Михаила Врубеля.",
     emoji: "🎨",
-    img: "https://images.unsplash.com/photo-1544413660-299165566b1d?w=600&q=80",
+    img: "https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/f0bdcc8b-ed3a-4b34-a15e-f945752b36d0.jpg",
     category: "Искусство",
   },
   {
@@ -98,7 +98,8 @@ const ATTRACTIONS = [
     name: "Серафимо-Алексеевская часовня",
     desc: "Жемчужина Омска — изящная часовня начала XX века. Восстановленная в 1990-х, она стала символом возрождения духовной жизни города.",
     emoji: "⛪",
-    img: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&q=80",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Omsk_Serafimо_chapel.jpg/800px-Omsk_Serafimo_chapel.jpg",
+    imgFallback: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Serafimо-Alekseyevskaya_Chapel%2C_Omsk%2C_Russia.jpg/800px-Serafimo-Alekseyevskaya_Chapel%2C_Omsk%2C_Russia.jpg",
     category: "Архитектура",
   },
   {
@@ -106,43 +107,51 @@ const ATTRACTIONS = [
     name: "Успенский собор",
     desc: "Величественный Успенский кафедральный собор на Соборной площади — духовный центр Омска и один из красивейших храмов Сибири.",
     emoji: "🕍",
-    img: "https://images.unsplash.com/photo-1543158181-e6f9f6712055?w=600&q=80",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Assumption_Cathedral%2C_Omsk%2C_Russia_-_panoramio.jpg/800px-Assumption_Cathedral%2C_Omsk%2C_Russia_-_panoramio.jpg",
+    imgFallback: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Uspenski_sobor_Omsk.jpg/800px-Uspenski_sobor_Omsk.jpg",
     category: "Архитектура",
   },
   {
     id: 7,
-    name: "Музей Достоевского",
-    desc: "Ф. М. Достоевский провёл в Омске 4 года на каторге. Музей хранит уникальные артефакты и документы об этом периоде жизни великого писателя.",
-    emoji: "📚",
-    img: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80",
-    category: "Культура",
-  },
-  {
-    id: 8,
     name: "G-Drive Арена",
     desc: "Современная домашняя арена легендарного ХК «Авангард». Хоккейные матчи здесь — это настоящий праздник и оглушительная атмосфера.",
     emoji: "🏒",
-    img: "https://images.unsplash.com/photo-1515703407324-5f753afd8be8?w=600&q=80",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/G-Drive_Arena_Omsk_exterior.jpg/800px-G-Drive_Arena_Omsk_exterior.jpg",
+    imgFallback: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Avangard_Arena_Omsk.jpg/800px-Avangard_Arena_Omsk.jpg",
     category: "Спорт",
   },
   {
-    id: 9,
+    id: 8,
     name: "Любинский проспект",
     desc: "Главный бульвар Омска с историческими зданиями XIX–XX веков. Прогулка по нему — это путешествие сквозь эпохи и архитектурные стили.",
     emoji: "🌆",
-    img: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Lyubinsky_Prospect%2C_Omsk.jpg/800px-Lyubinsky_Prospect%2C_Omsk.jpg",
+    imgFallback: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Omsk_Lubinsk_prospect.jpg/800px-Omsk_Lubinsk_prospect.jpg",
     category: "Архитектура",
+  },
+  {
+    id: 9,
+    name: "Музей Достоевского",
+    desc: "Ф. М. Достоевский провёл в Омске 4 года на каторге. Музей хранит уникальные артефакты и документы об этом периоде жизни великого писателя.",
+    emoji: "📚",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Omsk_Dostoevsky_Museum.jpg/800px-Omsk_Dostoevsky_Museum.jpg",
+    imgFallback: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Dostoevsky_Literary_Museum_Omsk.jpg/800px-Dostoevsky_Literary_Museum_Omsk.jpg",
+    category: "Культура",
   },
 ];
 
 /* ──────────── ДАННЫЕ ДЛЯ СКРЕТЧ-КАРТЫ ──────────── */
 const SCRATCH_PRIZES = [
-  { emoji: "🎁", text: "Скидка 15% на тур «Омск глазами инсайдера»!" },
-  { emoji: "☕", text: "Бесплатный сибирский чай в кафе партнёра!" },
-  { emoji: "🏒", text: "Приоритет при записи на хоккейный вечер!" },
-  { emoji: "📸", text: "Бесплатная фотосессия во время экскурсии!" },
-  { emoji: "🍽️", text: "Скидка 10% на кулинарный тур «Вкус Сибири»!" },
-  { emoji: "🌟", text: "VIP-место на следующей экскурсии!" },
+  { emoji: "🏰", text: "Бесплатная экскурсия по Омской крепости при записи на тур!" },
+  { emoji: "☕", text: "Сибирский чай с мёдом в подарок после экскурсии по Любинскому!" },
+  { emoji: "🏒", text: "Приоритетная запись на «Вечер с Авангардом» + скидка 10%!" },
+  { emoji: "📸", text: "Бесплатная фотосессия на закате у набережной Иртыша!" },
+  { emoji: "🎨", text: "Скидка 20% на посещение Музея Врубеля с гидом!" },
+  { emoji: "🌟", text: "VIP-маршрут «Омск за один день» в подарок!" },
+  { emoji: "⛪", text: "Авторская прогулка по историческому центру бесплатно!" },
+  { emoji: "🎭", text: "Экскурсия за кулисы Омского театра драмы!" },
+  { emoji: "🍽️", text: "Гастрономический тур «Вкус Сибири» со скидкой 15%!" },
+  { emoji: "🌊", text: "Закатная прогулка по Иртышской набережной с гидом — бесплатно!" },
 ];
 
 /* ──────────── ХУКИ ──────────── */
@@ -184,9 +193,19 @@ function ScratchCard() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [revealed, setRevealed] = useState(false);
   const [scratching, setScratching] = useState(false);
-  const [prize] = useState(() => SCRATCH_PRIZES[Math.floor(Math.random() * SCRATCH_PRIZES.length)]);
+  const [prize, setPrize] = useState(() => SCRATCH_PRIZES[Math.floor(Math.random() * SCRATCH_PRIZES.length)]);
   const [scratchPercent, setScratchPercent] = useState(0);
   const isDrawing = useRef(false);
+  const [cardKey, setCardKey] = useState(0);
+
+  const resetCard = () => {
+    setPrize(SCRATCH_PRIZES[Math.floor(Math.random() * SCRATCH_PRIZES.length)]);
+    setRevealed(false);
+    setScratching(false);
+    setScratchPercent(0);
+    isDrawing.current = false;
+    setCardKey((k) => k + 1);
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -197,37 +216,61 @@ function ScratchCard() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Фон скретч-слоя
+    // Фон скретч-слоя в стиле Омска — тёмно-синий с золотом
     const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    grad.addColorStop(0, "#1a2a5e");
-    grad.addColorStop(0.5, "#0f1a3e");
-    grad.addColorStop(1, "#2a1a5e");
+    grad.addColorStop(0, "#0d1b3e");
+    grad.addColorStop(0.4, "#1a2a5e");
+    grad.addColorStop(0.7, "#0a1628");
+    grad.addColorStop(1, "#1a0a2e");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Узор
-    ctx.fillStyle = "rgba(255,215,0,0.15)";
-    for (let i = 0; i < 30; i++) {
+    // Орнамент — золотые звёзды (символ Сибири)
+    for (let i = 0; i < 40; i++) {
+      ctx.fillStyle = `rgba(255,215,0,${0.05 + Math.random() * 0.2})`;
       ctx.beginPath();
       ctx.arc(
         Math.random() * canvas.width,
         Math.random() * canvas.height,
-        Math.random() * 3 + 1,
+        Math.random() * 2.5 + 0.5,
         0,
         Math.PI * 2
       );
       ctx.fill();
     }
 
-    // Текст-подсказка
-    ctx.fillStyle = "rgba(255,215,0,0.9)";
-    ctx.font = "bold 16px Montserrat, sans-serif";
+    // Декоративная рамка
+    ctx.strokeStyle = "rgba(255,215,0,0.4)";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
+
+    // Верхний текст — «ОМСК ПОД ЗАЩИТОЙ»
+    ctx.fillStyle = "rgba(255,215,0,0.95)";
+    ctx.font = "bold 13px Montserrat, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("✨ Потри, чтобы узнать приз!", canvas.width / 2, canvas.height / 2 - 10);
-    ctx.font = "14px Montserrat, sans-serif";
-    ctx.fillStyle = "rgba(255,255,255,0.6)";
-    ctx.fillText("🎰 Твой персональный подарок ждёт", canvas.width / 2, canvas.height / 2 + 20);
-  }, []);
+    ctx.fillText("★ ОМСК ПОД ЗАЩИТОЙ ★", canvas.width / 2, 36);
+
+    // Разделитель
+    ctx.strokeStyle = "rgba(255,215,0,0.3)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(24, 48);
+    ctx.lineTo(canvas.width - 24, 48);
+    ctx.stroke();
+
+    // Основной текст
+    ctx.fillStyle = "rgba(255,215,0,0.9)";
+    ctx.font = "bold 15px Montserrat, sans-serif";
+    ctx.fillText("🏙️ Потри карточку!", canvas.width / 2, canvas.height / 2 - 12);
+    ctx.font = "12px Montserrat, sans-serif";
+    ctx.fillStyle = "rgba(255,255,255,0.65)";
+    ctx.fillText("Твой бонус при записи на тур", canvas.width / 2, canvas.height / 2 + 14);
+
+    // Нижний текст
+    ctx.fillStyle = "rgba(255,215,0,0.6)";
+    ctx.font = "11px Montserrat, sans-serif";
+    ctx.fillText("Здесь начинается Сибирь", canvas.width / 2, canvas.height - 16);
+  }, [cardKey]);
 
   const getPos = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement) => {
     const rect = canvas.getBoundingClientRect();
@@ -269,44 +312,55 @@ function ScratchCard() {
   return (
     <div className="flex flex-col items-center gap-4">
       <div
+        key={cardKey}
         className="relative rounded-2xl overflow-hidden cursor-pointer select-none"
         style={{
           width: "100%",
           maxWidth: 420,
-          height: 180,
-          boxShadow: "0 0 40px rgba(255,215,0,0.2), 0 8px 32px rgba(0,0,0,0.5)",
-          border: "2px solid rgba(255,215,0,0.3)",
+          height: 200,
+          boxShadow: "0 0 50px rgba(255,215,0,0.25), 0 8px 32px rgba(0,0,0,0.6)",
+          border: "2px solid rgba(255,215,0,0.4)",
         }}
       >
         {/* Приз под слоем */}
         <div
           className="absolute inset-0 flex flex-col items-center justify-center gap-3"
-          style={{ background: "linear-gradient(135deg, #0a1628, #1a2a5e)" }}
+          style={{
+            background: "linear-gradient(135deg, #0a1628 0%, #1a2a5e 50%, #0d1b3e 100%)",
+          }}
         >
-          <div style={{ fontSize: 48 }}>{prize.emoji}</div>
+          {/* Верхний декор */}
+          <div style={{ position: "absolute", top: 10, left: 0, right: 0, textAlign: "center", fontSize: 11, color: "rgba(255,215,0,0.6)", letterSpacing: "0.2em" }}>
+            ★ ОМСК ПОД ЗАЩИТОЙ ★
+          </div>
+          <div style={{ fontSize: 52 }}>{prize.emoji}</div>
           <div
-            className="text-center px-4"
+            className="text-center px-6"
             style={{
               color: "#FFD700",
               fontFamily: "Cormorant Garamond, serif",
-              fontSize: 18,
+              fontSize: 17,
               fontWeight: 700,
               lineHeight: 1.4,
             }}
           >
             {prize.text}
           </div>
+          {/* Нижний декор */}
+          <div style={{ position: "absolute", bottom: 10, left: 0, right: 0, textAlign: "center", fontSize: 10, color: "rgba(255,255,255,0.35)", letterSpacing: "0.15em" }}>
+            Омск — здесь начинается Сибирь
+          </div>
         </div>
         {/* Скретч-слой */}
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full touch-none"
-          style={{ opacity: revealed ? 0 : 1, transition: "opacity 0.8s ease" }}
+          style={{ opacity: revealed ? 0 : 1, transition: "opacity 0.9s ease" }}
           onMouseDown={() => { isDrawing.current = true; setScratching(true); }}
           onMouseUp={() => { isDrawing.current = false; }}
           onMouseLeave={() => { isDrawing.current = false; }}
           onMouseMove={scratch}
-          onTouchStart={() => { isDrawing.current = true; setScratching(true); }}
+          onTouchStart={(e) => { e.preventDefault(); isDrawing.current = true; setScratching(true); }}
           onTouchEnd={() => { isDrawing.current = false; }}
           onTouchMove={scratch}
         />
@@ -317,11 +371,25 @@ function ScratchCard() {
         </div>
       )}
       {revealed && (
-        <div
-          className="text-center animate-fade-up px-4"
-          style={{ color: "#FFD700", fontWeight: 700, fontSize: 15 }}
-        >
-          🎉 Поздравляем! Покажи этот экран при записи и получи свой бонус!
+        <div className="flex flex-col items-center gap-3">
+          <div
+            className="text-center px-4"
+            style={{ color: "#FFD700", fontWeight: 700, fontSize: 15 }}
+          >
+            🎉 Поздравляем! Покажи этот экран при записи и получи свой бонус!
+          </div>
+          <button
+            onClick={resetCard}
+            className="px-6 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-105"
+            style={{
+              background: "rgba(255,215,0,0.12)",
+              border: "1px solid rgba(255,215,0,0.4)",
+              color: "#FFD700",
+              cursor: "pointer",
+            }}
+          >
+            🔄 Попробовать снова
+          </button>
         </div>
       )}
     </div>
@@ -512,7 +580,7 @@ export default function Index() {
                 Омск
               </div>
               <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", letterSpacing: "0.15em" }}>
-                INSIDER GUIDE
+                ОМСК ПОД ЗАЩИТОЙ
               </div>
             </div>
           </div>
@@ -608,6 +676,37 @@ export default function Index() {
         )}
       </nav>
 
+      {/* ═══ РЕКЛАМНЫЙ БАННЕР (на всю ширину) ═══ */}
+      <div
+        className="w-full relative overflow-hidden"
+        style={{
+          marginTop: 0,
+          boxShadow: "0 0 60px rgba(255,215,0,0.35), 0 4px 40px rgba(0,0,0,0.8)",
+          borderBottom: "3px solid rgba(255,215,0,0.5)",
+        }}
+      >
+        <img
+          src="https://cdn.poehali.dev/projects/8f3786ff-152d-4575-aadd-164cd69b12ba/bucket/00f42151-1e89-4ea9-88b3-0caf70946c54.png"
+          alt="Омск под защитой — рекламный баннер"
+          className="w-full object-cover"
+          style={{
+            display: "block",
+            maxHeight: "100vh",
+            transition: "transform 0.4s ease",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.transform = "scale(1.02)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.transform = "scale(1)"; }}
+        />
+        {/* Золотое свечение поверх баннера */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse 70% 40% at 50% 50%, rgba(255,215,0,0.08) 0%, transparent 70%)",
+            animation: "goldPulse 3s ease-in-out infinite",
+          }}
+        />
+      </div>
+
       {/* ═══ HERO ═══ */}
       <section
         id="hero"
@@ -657,37 +756,43 @@ export default function Index() {
               animation: "revealUp 0.6s ease-out forwards",
             }}
           >
-            ✦ ПЕРСОНАЛЬНЫЙ ГИД ПО ОМСКУ ✦
+            ✦ КУЛЬТУРНАЯ СТОЛИЦА СИБИРИ ✦
           </div>
 
           <h1
             className="hero-glow mb-6"
             style={{
               fontFamily: "Cormorant Garamond, serif",
-              fontSize: "clamp(48px, 10vw, 110px)",
+              fontSize: "clamp(40px, 8vw, 96px)",
               fontWeight: 700,
-              lineHeight: 0.9,
+              lineHeight: 1,
               color: "#fff",
               animation: "revealUp 0.8s ease-out 0.2s both",
             }}
           >
-            <span style={{ color: "#FFD700" }}>ОМСК</span>
+            <span style={{ color: "#FFD700" }}>ОМСК.</span>
             <br />
-            <span style={{ fontSize: "0.55em", letterSpacing: "0.15em", color: "rgba(255,255,255,0.9)" }}>
-              ИЗНУТРИ
+            <span style={{ fontSize: "0.52em", letterSpacing: "0.08em", color: "rgba(255,255,255,0.9)" }}>
+              Сердце Сибири —
+            </span>
+            <br />
+            <span style={{ fontSize: "0.42em", letterSpacing: "0.12em", color: "rgba(255,215,0,0.85)" }}>
+              культурная столица
             </span>
           </h1>
 
           <p
-            className="max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="max-w-3xl mx-auto mb-10 leading-relaxed"
             style={{
-              color: "rgba(255,255,255,0.7)",
-              fontSize: "clamp(15px, 2.5vw, 18px)",
+              color: "rgba(255,255,255,0.75)",
+              fontSize: "clamp(14px, 2vw, 17px)",
               animation: "revealUp 0.8s ease-out 0.4s both",
             }}
           >
-            Я — местный, который знает каждый закоулок города. Покажу вам настоящий Омск: без
-            скучных путеводителей, зато с историями, которые помнят только старожилы.
+            Мы создаём рекламную кампанию, которая показывает Омск не просто как город, а как
+            культурный центр России. Здесь история встречается с современным искусством, а традиции
+            — с новыми смыслами. Наша цель — вдохновить вас открыть для себя Омск: город, где
+            рождается культурный код Сибири.
           </p>
 
           <div
@@ -726,8 +831,8 @@ export default function Index() {
             {[
               { val: "300+", lab: "лет истории" },
               { val: "1.1M", lab: "жителей" },
-              { val: "4 года", lab: "Достоевский в Омске" },
-              { val: "Top-3", lab: "театров Сибири" },
+              { val: "30 000", lab: "экспонатов Врубеля" },
+              { val: "Top-1", lab: "культурный центр Сибири" },
             ].map((f) => (
               <div
                 key={f.lab}
@@ -957,7 +1062,7 @@ export default function Index() {
               {" "}удивляет
             </h2>
             <p style={{ color: "rgba(255,255,255,0.55)", maxWidth: 600, margin: "0 auto", fontSize: 16 }}>
-              Второй по величине город Сибири скрывает столько историй, что одной жизни не хватит, чтобы узнать их все
+              Омск — не просто город. Это место, где рождается культурный код всей Сибири
             </p>
           </div>
 
@@ -982,17 +1087,18 @@ export default function Index() {
                   marginBottom: 16,
                 }}
               >
-                Город, где Достоевский стал Достоевским
+                Культурный код Сибири
               </h3>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: 16 }}>
-                Фёдор Михайлович провёл в Омском остроге 4 тяжелейших года. Именно здесь, среди
-                каторжников, он написал «Записки из Мёртвого дома» — книгу, которая потрясла весь
-                просвещённый мир. Омск буквально вылепил того Достоевского, которого мы знаем.
+                Омск — это не просто второй по величине город Сибири. Это место, где история
+                встречается с современным искусством, а традиции — с новыми смыслами. Здесь
+                Достоевский стал Достоевским, здесь рождались картины Врубеля, здесь живёт
+                легендарный «Авангард».
               </p>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8 }}>
-                Город стоит на слиянии двух рек — Оми и Иртыша. В XVIII веке это была пограничная
-                крепость, защищавшая Россию от степных набегов. Сегодня это мегаполис с богатейшей
-                культурной жизнью, театрами мирового уровня и молодёжью, которая не хочет уезжать.
+                Мы создаём рекламный образ Омска, который ломает стереотипы. Это не просто
+                туристический маршрут — это приглашение стать частью культурной истории. Увидеть
+                Омск по-настоящему — значит открыть для себя настоящее сердце Сибири.
               </p>
             </div>
 
@@ -1019,19 +1125,21 @@ export default function Index() {
               </h3>
               <ul className="flex flex-col gap-3">
                 {[
-                  "🏰 Омской крепости — более 300 лет",
-                  "📚 Достоевский провёл здесь 4 года каторги",
-                  "🎭 Театр драмы основан в 1874 году — старше многих европейских",
-                  "🌊 Иртыш — один из крупнейших притоков Оби",
-                  "🏒 ХК «Авангард» — многократный чемпион КХЛ",
-                  "🎨 Музей Врубеля хранит 30 000+ экспонатов",
-                  "🌡️ Зимой бывает до −40°C — сибирский закал!",
-                  "🍽️ Омские пельмени — особый рецепт с говядиной и свининой",
-                  "⛪ 14 православных церквей в историческом центре",
-                  "🌆 Любинский проспект — «Омский Арбат»",
+                  { num: "01", emoji: "🏰", text: "Омской крепости — 300+ лет: именно отсюда начиналось завоевание Сибири" },
+                  { num: "02", emoji: "📚", text: "Достоевский провёл здесь 4 года — в Омском остроге родился великий писатель" },
+                  { num: "03", emoji: "🎭", text: "Театр драмы (1874 г.) старше многих европейских — один из лучших в России" },
+                  { num: "04", emoji: "🌊", text: "Иртыш длиннее Волги — 4248 км, и его сердце бьётся в Омске" },
+                  { num: "05", emoji: "🏒", text: "ХК «Авангард» выигрывал Кубок Гагарина — гордость всей Сибири" },
+                  { num: "06", emoji: "🎨", text: "Музей Врубеля хранит 30 000+ шедевров — крупнейший арт-музей Сибири" },
+                  { num: "07", emoji: "🌡️", text: "Зимой −40°C, летом +35°C — самый контрастный климат в России" },
+                  { num: "08", emoji: "🏙️", text: "Омск занимал 2-е место по численности в Сибири — настоящий мегаполис" },
+                  { num: "09", emoji: "⛪", text: "14 православных храмов в историческом центре — духовная столица Сибири" },
+                  { num: "10", emoji: "🌆", text: "Любинский проспект — «Омский Арбат»: 130 лет истории за каждым фасадом" },
                 ].map((fact) => (
-                  <li key={fact} className="flex items-start gap-2 text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>
-                    {fact}
+                  <li key={fact.num} className="flex items-start gap-3 text-sm" style={{ color: "rgba(255,255,255,0.75)" }}>
+                    <span style={{ color: "#FFD700", fontWeight: 700, fontFamily: "Cormorant Garamond, serif", fontSize: 16, minWidth: 22, lineHeight: 1.6 }}>{fact.num}</span>
+                    <span style={{ fontSize: 16, flexShrink: 0 }}>{fact.emoji}</span>
+                    <span style={{ lineHeight: 1.6 }}>{fact.text}</span>
                   </li>
                 ))}
               </ul>
@@ -1118,11 +1226,13 @@ export default function Index() {
                 marginBottom: 12,
               }}
             >
-              Твой{" "}
-              <span style={{ color: "#FFD700" }}>персональный приз</span>
+              <span style={{ color: "#FFD700" }}>ОМСК ПОД ЗАЩИТОЙ</span>
+              <br />
+              <span style={{ fontSize: "0.65em", color: "rgba(255,255,255,0.85)" }}>Твой персональный приз</span>
             </h2>
             <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 16 }}>
-              Потри карточку и узнай свой бонус при записи на тур
+              Потри карточку в стиле Омска и узнай свой бонус при записи на тур.<br />
+              <span style={{ color: "rgba(255,215,0,0.6)", fontSize: 14 }}>Каждый раз — новый приз!</span>
             </p>
           </div>
 
@@ -1195,7 +1305,13 @@ export default function Index() {
                     alt={attr.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${attr.id + 10}/600/400`;
+                      const target = e.target as HTMLImageElement;
+                      const fb = (attr as { imgFallback?: string }).imgFallback;
+                      if (fb && target.src !== fb && !target.src.includes("picsum")) {
+                        target.src = fb;
+                      } else if (!target.src.includes("picsum")) {
+                        target.src = `https://picsum.photos/seed/omsk${attr.id + 100}/600/400`;
+                      }
                     }}
                   />
                   <div
@@ -1288,11 +1404,13 @@ export default function Index() {
                 marginBottom: 12,
               }}
             >
-              Напишите мне{" "}
-              <span style={{ color: "#FFD700" }}>прямо сейчас</span>
+              Хотите открыть Омск{" "}
+              <span style={{ color: "#FFD700" }}>по-новому?</span>
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 16 }}>
-              Отвечаю быстро. Расскажу подробности, подберу лучшую дату, отвечу на все вопросы.
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 16, maxWidth: 620, margin: "0 auto", lineHeight: 1.8 }}>
+              Напишите мне — помогу спланировать маршрут, расскажу о культурных событиях, подскажу,
+              где почувствовать настоящий сибирский ритм. Отвечу быстро, потому что я здесь, чтобы
+              вы влюбились в этот город.
             </p>
           </div>
 
@@ -1357,7 +1475,7 @@ export default function Index() {
             ))}
           </div>
 
-          {/* Время работы */}
+          {/* Девиз */}
           <div
             ref={(el) => register(22)(el as HTMLElement | null)}
             className="rounded-3xl p-8 text-center"
@@ -1368,30 +1486,23 @@ export default function Index() {
               ...(visible[22] ? { animation: "revealUp 0.8s ease-out 0.4s forwards" } : {}),
             }}
           >
-            <div className="text-3xl mb-3">🕐</div>
+            <div className="text-3xl mb-3">🌟</div>
             <h3
               style={{
                 fontFamily: "Cormorant Garamond, serif",
-                fontSize: 24,
+                fontSize: 22,
                 fontWeight: 700,
                 color: "#FFD700",
                 marginBottom: 8,
               }}
             >
-              Режим работы
+              Омск — культурная столица России
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-              {[
-                { day: "Пн – Пт", time: "09:00 – 21:00" },
-                { day: "Суббота", time: "10:00 – 20:00" },
-                { day: "Воскресенье", time: "11:00 – 18:00" },
-              ].map((wh) => (
-                <div key={wh.day} className="text-center">
-                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13 }}>{wh.day}</div>
-                  <div style={{ color: "#FFD700", fontWeight: 700, fontSize: 18 }}>{wh.time}</div>
-                </div>
-              ))}
-            </div>
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 15, lineHeight: 1.8, maxWidth: 520, margin: "0 auto" }}>
+              Здесь рождается новый взгляд на Сибирь. Мы создаём рекламный образ, который ломает
+              стереотипы и приглашает в путешествие. Увидеть Омск по-настоящему — значит стать
+              частью этой истории.
+            </p>
           </div>
         </div>
       </section>
@@ -1420,12 +1531,12 @@ export default function Index() {
                     Омск
                   </div>
                   <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: "0.15em" }}>
-                    INSIDER GUIDE
+                    ОМСК ПОД ЗАЩИТОЙ
                   </div>
                 </div>
               </div>
               <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, lineHeight: 1.7 }}>
-                Персональный гид по Омску. Показываю город таким, каким его знают только местные.
+                Омск — культурная столица России. Здесь рождается новый взгляд на Сибирь.
               </p>
             </div>
 
